@@ -7,7 +7,7 @@
 
 ## 어디서부터 시작하죠?
 
-* [General Philosophy](./general_philosophy.md) 스마트 컨트렉트 보안 사고방식에 대해 설명합니다.
+* [일반적인 철학 (General Philosophy)](./general_philosophy.md) 스마트 컨트렉트 보안 사고방식에 대해 설명합니다.
 * [Solidity Recommendations](./recommendations.md) 바람직한 코드 패턴의 예시를 담았습니다.
 * [Known Attacks](./known_attacks.md) 다른 클래스들 간의 취약성을 피하는 방법을 설명합니다.
 * [Software Engineering](./software_engineering.md) 몇개의 아키텍쳐의 개요와 위험완화를 위한 디자인 접근법의 개요입니다.
@@ -24,70 +24,83 @@
 
 글이나 블로그 포스팅을 하신다면, [bibliography](./bibliography.md)에 추가 해 주세요.
 
-## 基本理念
-<a name="general-philosophy"></a>
 
-以太坊和其他复杂的区块链项目都处于早期阶段并且有很强的实验性质。因此，随着新的bug和安全漏洞被发现，新的功能不断被开发出来，其面临的安全威胁也是不断变化的。这篇文章对于开发人员编写安全的智能合约来说只是个开始。
+## 일반적인 철학 (General Philosophy)
+이더리움과 복잡한 블록체인 프로그램들은 새롭고 아주 실험적입니다. 그러므로, 당신은 새로운 버그들이나 보안 위험을 발견하는 것과 같은 보안 환경에 대해 끊임없는 변화를 예상하셔야 합니다. 이 문서의 보안 연습은 기초적인 단계의 보안이므로 스마트 컨트렉트 개발자로서는 더 공부하셔야 합니다.
 
-开发智能合约需要一个全新的工程思维，它不同于我们以往项目的开发。因为它犯错的代价是巨大的，并且很难像传统软件那样轻易的打上补丁。就像直接给硬件编程或金融服务类软件开发，相比于web开发和移动开发都有更大的挑战。因此，仅仅防范已知的漏洞是不够的，你还需要学习新的开发理念：
+스마트 컨트렉트 프로그래밍은 당신이 해오던 방식과 다른 엔지니어링 사고 방식이 필요합니다. 실패 비용(The cost of failure)이 높을 수도 있고, 변경하기 까다롭고, 하드웨어 프로그래밍 또는 금융 서비스 프로그래밍과 유사한 방법으로 웹이나 모바일 환경에서 만들어야 합니다. 그러니 알려진 취약성 방어기법으로는 충분하지 않아서 새로운 개발 철학에 대해 학습 필요성을 느끼실 것 입니다:
 
-- **对可能的错误有所准备**。任何有意义的智能合约或多或少都存在错误。因此你的代码必须能够正确的处理出现的bug和漏洞。始终保证以下规则：
-  - 当智能合约出现错误时，停止合约，（“断路开关”）
-  - 管理账户的资金风险（限制（转账）速率、最大（转账）额度）
-  - 有效的途径来进行bug修复和功能提升
+## 실패를 대비
 
-- [**谨慎发布智能合约**](#contract-rollout)。 尽量在正式发布智能合约之前发现并修复可能的bug。
-  - 对智能合约进行彻底的测试，并在任何新的攻击手法被发现后及时的测试(包括已经发布的合约)
-  - 从alpha版本在测试网（testnet）上发布开始便提供[bug赏金计划](#bounties)
-  - 阶段性发布，每个阶段都提供足够的测试
+컨트렉트 안에 에러 중 사소하지 않은 건 없습니다. 그러므로 당신의 코드는 버그 대응과 취약성을 유연하게 대처해야 합니다.
 
-- **保持智能合约的简洁**。复杂会增加出错的风险。
-  - 确保智能合约逻辑简洁
-  - 确保合约和函数模块化
-  - 使用已经被广泛使用的合约或工具（比如，不要自己写一个随机数生成器）
-  - 条件允许的话，清晰明了比性能更重要
-  - 只在你系统的去中心化部分使用区块链
+  - 컨트렉트에 무언가 잘못 되어가고 있으면 멈춤 ('써킷 브레이커')
+  - 위험이 있는 자금의 액수를 관리 (비율 제한, 최대 사용량)
+  - 버그들 수정과 개선을 위한 효과적인 업그레이드 방법
 
-- **保持更新**。通过下一章节所列出的资源来确保获取到最新的安全进展。
-  - 在任何新的漏洞被发现时检查你的智能合约
-  - 尽可能快的将使用到的库或者工具更新到最新
-  - 使用最新的安全技术
+## 신중한 공개
 
-- **清楚区块链的特性**。尽管你先前所拥有的编程经验同样适用于以太坊开发，但这里仍然有些陷阱你需要留意：
-  - 特别小心针对外部合约的调用，因为你可能执行的是一段恶意代码然后更改控制流程
-  - 清楚你的public function是公开的，意味着可以被恶意调用。（在以太坊上）你的private data也是对他人可见的
-  - 清楚gas的花费和区块的gas limit
+전체 제품 공개 전에 항상 버그를 잡을 수 있도록 하세요.
 
-### 基本权衡：简单性与复杂性
-<a name="fundamental-tradeoffs"></a>
+  - 철저하게 테스트 컨트렉트를 작성하고, 새로운 공격 벡터를 발견하면 테스트 항목에 추가
+  - [버그 바운티](#bounties)를 제공하고 알파 테스트넷 공개 때 부터 시작
+  - 단계별 공개, 각 단계별 테스트와 사용량 증가
 
-在评估一个智能合约的架构和安全性时有很多需要权衡的地方。对任何智能合约的建议是在各个权衡点中找到一个平衡点。
+## 컨트렉트의 단순함 유지
 
-从传统软件工程的角度出发：一个理想的智能合约首先需要模块化，能够重用代码而不是重复编写，并且支持组件升级。从智能合约安全架构的角度出发同样如此，模块化和重用被严格审查检验过的合约是最佳策略，特别是在复杂智能合约系统里。
+복잡성은 에러 발생 가능성을 증가시킵니다.
 
-然而，这里有几个重要的例外，它们从合约安全和传统软件工程两个角度考虑，所得到的重要性排序可能不同。当中每一条，都需要针对智能合约系统的特点找到最优的组合方式来达到平衡。
+  - 컨트렉트 구조를 반드시 간단하게 구성
+  - 코드를 모듈화해 컨트렉트와 함수를 작게 유지
+  - 이미 사용된 툴들 또는 이용 가능한 코드 사용(예. 랜덤 숫자 생성을 스스로 돌리지 마세요)
+  - 가능한 퍼포먼스 명확성 선호  
+  - 분산화가 필요한 시스템 부분은 블록체인만 사용
 
-- 固化 vs 可升级
-- 庞大 vs 模块化
-- 重复 vs 可重用
+## 최신 버전으로 유지
 
-#### 固化 vs 可升级
+자원 리스트의 다음 부분으로 새로운 보안 개발 관심 유지를 한다.
 
-在很多文档或者开发指南中，包括该指南，都会强调延展性比如：可终止，可升级或可更改的特性，不过对于智能合约来说，延展性和安全之间是个*基本权衡*。
+  - 발견된 새로운 버그에 대한 컨트렉트 확인
+  - 가능한 툴이나 라이브러리를 최신버전으로 업그레이드
+  - 유용하다고 인정된 새로운 보안 기술 채택
 
-延展性会增加程序复杂性和潜在的攻击面。对于那些只在特定的时间段内提供有限的功能的智能合约，简单性比复杂性显得更加高效，比如无管治功能，有限短期内使用的代币发行的智能合约系统(governance-fee,finite-time-frame token-sale contracts)。
+## 블록체인의 특징을 이해
 
-#### 庞大 vs 模块化
+대부분의 프로그래밍은 이더리움 프로그래밍과 관련된 경험일텐데, 몇가지 위험을 아셔야 합니다.
 
-一个庞大的独立的智能合约把所有的变量和模块都放到一个合约中。尽管只有少数几个大家熟知的智能合约系统真的做到了大体量，但在将数据和流程都放到一个合约中还是享有部分优点--比如，提高代码审核(code review)效率。
+  - 외부(external) 컨트렉트 호출(call)을 아주 주의, 악성코드가 실행되거나 통제 흐름이 변경될 수도 있음
+  - 공공(public) 함수는 공공의 성질을 가지고 있으며, 악의적으로 호출 될 수 있음을 이해. 개인적인(private) 데이터도 아무나 볼 수 있음
+  - 가스 비용과 블록 가스 제한을 명심
 
-和在这里讨论的其他权衡点一样，传统软件开发策略和从合约安全角度出发考虑，两者不同主要在对于简单、短生命周期的智能合约；对于更复杂、长生命周期的智能合约，两者策略理念基本相同。
+## 펀더멘탈 트레이드오프 (Fundamental Tradeoffs) : 단순함과 복잡함 경우
 
-#### 重复 vs 可重用
+스마트 컨트렉트 시스템 보안과 구조를 평가할때 몇가지 펀더멘탈 트레이드오프가 고려된다. 스마트 컨트렉트 시스템의 상충 관계에 대한 적절한 균형을 확인하기 위해 일반적으로 추천 한다.
 
-从软件工程角度看，智能合约系统希望在合理的情况下最大程度地实现重用。 在Solidity中重用合约代码有很多方法。 使用**你拥有的**以前部署的经过验证的智能合约是实现代码重用的最安全的方式。
+An ideal smart contract system from a software engineering bias is modular, reuses code instead of duplicating it, and supports upgradeable components. An ideal smart contract system from a secure architecture bias may share this mindset, especially in the case of more complex smart contract systems.
 
-在以前所拥有已部署智能合约不可重用时重复还是很需要的。 现在[Live Libs](https://github.com/ConsenSys/live-libs) 和[Zeppelin Solidity](https://github.com/OpenZeppelin/zeppelin-solidity) 正寻求提供安全的智能合约组件使其能够被重用而不需要每次都重新编写。任何合约安全性分析都必须标明重用代码，特别是以前没有建立与目标智能合同系统中处于风险中的资金相称的信任级别的代码。
+However, there are important exceptions where security and software engineering best practices may not be aligned.  In each case, the proper balance is obtained by identifying the optimal mix of properties along contract system dimensions such as:
+
+- Rigid versus Upgradeable
+- Monolithic versus Modular
+- Duplication versus Reuse
+
+### Rigid versus Upgradeable
+
+While multiple resources, including this one, emphasize malleability characteristics such as Killable, Upgradeable or Modifiable patterns there is a *fundamental tradeoff* between malleability and security.
+
+Malleability patterns by definition add complexity and potential attack surfaces.  Simplicity is particularly effective over complexity in cases where the smart contract system performs a very limited set of functionality for a pre-defined limited period of time, for example, a governance-free finite-time-frame token-sale contract system.
+
+### Monolithic versus Modular
+
+A monolithic self-contained contract keeps all knowledge locally identifiable and readable.  While there are few smart contract systems held in high regard that exist as monoliths, there is an argument to be made for extreme locality of data and flow - for example, in the case of optimizing code review efficiency.
+
+As with the other tradeoffs considered here, security best practices trend away from software engineering best practices in simple short-lived contracts and trend toward software engineering best practices in the case of more complex perpetual contract systems.
+
+### Duplication versus Reuse
+
+A smart contract system from a software engineering perspective wishes to maximize reuse where reasonable.  There are many ways to reuse contract code in Solidity.  Using proven previously-deployed contracts *which you own* is generally the safest manner to achieve code reuse.
+
+Duplication is frequently relied upon in cases where self-owned previously-deployed contracts are not available.  Efforts such as [Live Libs](https://github.com/ConsenSys/live-libs) and [Zeppelin Solidity](https://github.com/OpenZeppelin/zeppelin-solidity) seek to provide patterns such that secure code can be re-used without duplication.  Any contract security analyses must include any re-used code that has not previously established a level of trust commensurate with the funds at risk in the target smart contract system.
 
 ## 安全通知
 

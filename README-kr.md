@@ -1,30 +1,28 @@
-# 以太坊智能合约 —— 最佳安全开发指南
+# 이더리움 스마트 컨트렉트 보안 연습들
 
-*本文翻译自：https://github.com/ConsenSys/smart-contract-best-practices。
-为了使语句表达更加贴切，个别地方未按照原文逐字逐句翻译，如有出入请以原文为准。*
+이 문서는 중급 솔리디티 프로그래머들을 위해 보안 고려사항들의 기초 지식을 제공합니다.
+이것은 [ConsenSys Diligence](https://media.consensys.net/introducing-consensys-diligence-cf38f83948c)와 폭넓은 이더리움 커뮤니티들에 의해 유지됩니다.
 
 [![Join the chat at https://gitter.im/ConsenSys/smart-contract-best-practices](https://badges.gitter.im/ConsenSys/smart-contract-best-practices.svg)](https://gitter.im/ConsenSys/smart-contract-best-practices?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**主要章节如下**:
+## 어디서부터 시작하죠?
 
-- [**Solidity安全贴士**](#solidity-tips)
-- [**已知的攻击手段**](#known-attacks)
-  - [***竞态***](#race-conditions)
-    - [***可重入***](#reentrancy)
-    - [***交易顺序依赖***](#transaction-ordering-dependence)
-  - [***针对Gas的攻击***](#dos-with-block-gas-limit)
-  -  [***整数上溢/整数下溢***](#integer-overflow-and-underflow)
-- [**软件工程开发技巧**](#eng-techniques)
-- [**参考文献**](#bibliography)
+* [General Philosophy](./general_philosophy.md) 스마트 컨트렉트 보안 사고방식에 대해 설명합니다.
+* [Solidity Recommendations](./recommendations.md) 바람직한 코드 패턴의 예시를 담았습니다.
+* [Known Attacks](./known_attacks.md) 다른 클래스들 간의 취약성을 피하는 방법을 설명합니다.
+* [Software Engineering](./software_engineering.md) 몇개의 아키텍쳐의 개요와 위험완화를 위한 디자인 접근법의 개요입니다.
+* [Documentation and Procedures](./documentation_procedures.md) 외부 개발자들과 감사원들(Auditors)을 위한 시스템 문서 작성법 연습 개요입니다.
+* [Security Tools](./security_tools.md) 취약성 탐지와 코드 수준 발전을 위한 툴 리스트 입니다.
+* [Security Notifications](./security_notifications.md) 최신 상태를 유지하기 위한 정보 소스 리스트 입니다.
+* [Tokens](./tokens.md) 토큰과 관련된 연습 개요 입니다.
 
-这篇文档旨在为Solidity开发人员提供一些智能合约的安全准则(**security baseline**)。当然也包括智能合约的**安全开发理念、bug赏金计划指南、文档例程以及工具。**
+## 기여자(Contributions)를 환영합니다!
 
-我们邀请社区对该文档提出修改或增补建议，欢迎各种合并请求(Pull Request)。若有相关的文章或者博客的发表，也清将其加入到[参考文献](#bibliography)中，具体详情请参见我们的[社区贡献指南](CONTRIBUTING.md)。
+작은 수정이나, 새로운 섹션 추가를 자유롭게 풀 리퀘스트(pull request)해주세요. 만약에 새로운 컨텐츠 내용을 작성하신다면, [contributing](./about/contributing.md)페이지 안에 스타일 안내 방식으로 언급해주세요.  
 
-#### 更多期待内容
-我们欢迎并期待社区开发者贡献以下几个方面的内容：
- -  Solidity代码测试（包括代码结构，程序框架 以及 常见软件工程测试）
- -  智能合约开发经验总结，以及更广泛的基于区块链的开发技巧分享
+필요한 보완이나 업데이트 주제들은 [issues](https://github.com/ConsenSys/smart-contract-best-practices/issues)에서 볼 수 있습니다. 만약 당신의 아이디어에 대해 토론하기 원한다면, [Gitter](https://gitter.im/ConsenSys/smart-contract-best-practices)에서 우리와 채팅 할 수 있습니다.
+
+글이나 블로그 포스팅을 하신다면, [bibliography](./bibliography.md)에 추가 해 주세요.
 
 ## 基本理念
 <a name="general-philosophy"></a>
@@ -40,7 +38,7 @@
 
 - [**谨慎发布智能合约**](#contract-rollout)。 尽量在正式发布智能合约之前发现并修复可能的bug。
   - 对智能合约进行彻底的测试，并在任何新的攻击手法被发现后及时的测试(包括已经发布的合约)
-  - 从alpha版本在测试网（testnet）上发布开始便提供[bug赏金计划](#bounties) 
+  - 从alpha版本在测试网（testnet）上发布开始便提供[bug赏金计划](#bounties)
   - 阶段性发布，每个阶段都提供足够的测试
 
 - **保持智能合约的简洁**。复杂会增加出错的风险。
@@ -95,7 +93,7 @@
 
 以下这些地方通常会通报在Ethereum或Solidity中新发现的漏洞。安全通告的官方来源是Ethereum Blog，但是一般漏洞都会在其他地方先被披露和讨论。
 
-- [Ethereum Blog](https://blog.ethereum.org/): The official Ethereum blog 
+- [Ethereum Blog](https://blog.ethereum.org/): The official Ethereum blog
   - [Ethereum Blog - Security only](https://blog.ethereum.org/category/security/): 所有相关博客都带有**Security**标签
 - [Ethereum Gitter](https://gitter.im/orgs/ethereum/rooms) 聊天室
   - [Solidity](https://gitter.im/ethereum/solidity)
@@ -265,7 +263,7 @@ contract Token {
 ```
 注意断言保护 **不是** 严格意义的余额检测， 因为智能合约可以不通过`deposit()` 函数被 [强制发送Ether](#ether-forcibly-sent)！
 
-### 正确使用`assert()`和`require()` 
+### 正确使用`assert()`和`require()`
 
 在Solidity 0.4.10 中`assert()`和`require()`被加入。`require(condition)`被用来验证用户的输入，如果条件不满足便会抛出异常，应当使用它验证所有用户的输入。 `assert(condition)` 在条件不满足也会抛出异常，但是最好只用于固定变量：内部错误或你的智能合约陷入无效的状态。遵循这些范例，使用分析工具来验证永远不会执行这些无效操作码：意味着代码中不存在任何不变量，并且代码已经正式验证。
 
@@ -532,7 +530,7 @@ function untrustedGetFirstWithdrawalBonus(address recipient) public {
 
 除了修复bug让重入不可能成功，[不受信任的函数也已经被标记出来](https://github.com/ConsenSys/smart-contract-best-practices#mark-untrusted-contracts) 。同样的情景： `untrustedGetFirstWithdrawalBonus()` 调用`untrustedWithdraw()`, 而后者调用了外部合约，因此在这里`untrustedGetFirstWithdrawalBonus()` 是不安全的。
 
-另一个经常被提及的解决办法是（*译者注：像传统多线程编程中一样*）使用[mutex](https://en.wikipedia.org/wiki/Mutual_exclusion)。它会"lock" 当前状态，只有锁的当前拥有者能够更改当前状态。一个简单的例子如下： 
+另一个经常被提及的解决办法是（*译者注：像传统多线程编程中一样*）使用[mutex](https://en.wikipedia.org/wiki/Mutual_exclusion)。它会"lock" 当前状态，只有锁的当前拥有者能够更改当前状态。一个简单的例子如下：
 
 ```sh
 // Note: This is a rudimentary example, and mutexes are particularly useful where there is substantial logic and/or shared state
@@ -780,7 +778,7 @@ contract SomeRegister {
         }
         _;
     }
-    
+
     function changeBackend(address newBackend) public
     onlyOwner()
     returns (bool)

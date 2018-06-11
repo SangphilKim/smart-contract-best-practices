@@ -1,4 +1,4 @@
-# 이더리움 스마트 컨트렉트 보안 연습들
+# 이더리움 스마트 컨트렉트 보안 습관들
 
 이 문서는 중급 솔리디티 프로그래머들을 위해 보안 고려사항들의 기초 지식을 제공합니다.
 이것은 [ConsenSys Diligence](https://media.consensys.net/introducing-consensys-diligence-cf38f83948c)와 폭넓은 이더리움 커뮤니티들에 의해 유지됩니다.
@@ -74,15 +74,15 @@
 
 ## 펀더멘탈 트레이드오프 (Fundamental Tradeoffs) : 단순함과 복잡함 경우
 
-스마트 컨트렉트 시스템 보안과 구조를 평가할때 몇가지 펀더멘탈 트레이드오프가 고려된다. 스마트 컨트렉트 시스템의 상충 관계에 대한 적절한 균형을 확인하기 위해 일반적으로 추천 한다.
+스마트 컨트렉트 시스템 보안과 구조를 평가할때 몇가지 펀더멘탈 트레이드오프가 고려됩니다. 스마트 컨트렉트 시스템의 상충 관계에 대한 적절한 균형을 확인하기 위해 일반적으로 추천 합니다.
 
-An ideal smart contract system from a software engineering bias is modular, reuses code instead of duplicating it, and supports upgradeable components. An ideal smart contract system from a secure architecture bias may share this mindset, especially in the case of more complex smart contract systems.
+소프트웨어 엔지니어링 측면에서 이상적인 스마트 컨트렉트 시스템은 모듈화이며, 복제 대신 코드를 재사용하며, 컴포넌트가 업그레이드 가능하게 하는 것입니다. 안전한 아키텍쳐(secure architecture)측면에서 이상적인 스마트 컨트렉트 시스템은 유난히 복잡한 스마트 컨트렉트 시스템의 경우를 포함해 이런 사고방식을 공유하는 것입니다.
 
-However, there are important exceptions where security and software engineering best practices may not be aligned.  In each case, the proper balance is obtained by identifying the optimal mix of properties along contract system dimensions such as:
+하지만, 중요한 예외사항으로 소프트웨어 엔지니어링 모범 규칙과 보안을 동일시 하지 않는 것입니다. 모든 경우에, 아래 컨트렉트 시스템 관점 사이에서 최적의 방법을 섞어 적절한 균형을 얻는 것입니다:
 
-- Rigid versus Upgradeable
-- Monolithic versus Modular
-- Duplication versus Reuse
+- 업그레이드 불가능과 업그레이드 가능
+- 단일 방식과 모듈 방식
+- 복제와 재사용
 
 ### Rigid versus Upgradeable
 

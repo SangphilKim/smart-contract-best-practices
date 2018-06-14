@@ -84,23 +84,23 @@
 - 단일 방식과 모듈 방식
 - 복제와 재사용
 
-### Rigid versus Upgradeable
+### 업그레이드 불가능과 업그레이드 가능
 
-While multiple resources, including this one, emphasize malleability characteristics such as Killable, Upgradeable or Modifiable patterns there is a *fundamental tradeoff* between malleability and security.
+여러 리소스들을 사용하는 동안에 Killable과 같이 유연성이 강조된 형태거나, 업그레이드가 가능하거나 수정가능한 패턴은 *펀더멘탈 트레이드오프* 의 유연성(malleability)과 보안성(security) 사이에 있습니다.
 
-Malleability patterns by definition add complexity and potential attack surfaces.  Simplicity is particularly effective over complexity in cases where the smart contract system performs a very limited set of functionality for a pre-defined limited period of time, for example, a governance-free finite-time-frame token-sale contract system.
+유연하게 정의된 패턴은 복잡성과 잠재적인 공격면을 추가하게 됩니다. 단순함은 스마트 컨트렉트 시스템의 짧은 시간동안 사전 정의된 아주 제한적인 기능의 복잡한 성능을 뛰어넘는데 효과적입니다. 예를 들면, 한정된 시간동안 관리자 없이 토큰 세일을 하는 컨트렉트 시스템과 같습니다.
 
-### Monolithic versus Modular
+### 단일 방식과 모듈 방식
 
-A monolithic self-contained contract keeps all knowledge locally identifiable and readable.  While there are few smart contract systems held in high regard that exist as monoliths, there is an argument to be made for extreme locality of data and flow - for example, in the case of optimizing code review efficiency.
+단일 방식 컨트렉트는 지역적으로 정의된 식별가능와 조회가능이 모두 포함 되어 있습니다. 단일 방식으로 존재하는 몇개의 스마트 컨트렉트 시스템은 높은 관심을 가지게 되며, 극도로 지역적인 데이타와 흐름을 가지는 인수(argument)가 생깁니다 - 예를 들면, 코드 최적화(optimizing code) 효율성 검토 같은 경우 입니다.
 
-As with the other tradeoffs considered here, security best practices trend away from software engineering best practices in simple short-lived contracts and trend toward software engineering best practices in the case of more complex perpetual contract systems.
+여기서 고려되는 다른 상충관계(tradeoffs)와 마찬가지로, 보안 사례들(best practices)은 간단하면서 오래가지 못하는 소프트웨어 엔지니어링 사례와 멀어지는 경향이 있고, 더 복잡하면서 빈번하게 계속되는 컨트렉트 시스템 경우의 소프트웨어 엔지니어링 사례 쪽으로 기울게 됩니다.
 
-### Duplication versus Reuse
+### 복제와 재사용
 
-A smart contract system from a software engineering perspective wishes to maximize reuse where reasonable.  There are many ways to reuse contract code in Solidity.  Using proven previously-deployed contracts *which you own* is generally the safest manner to achieve code reuse.
+소프트 엔지니어링 스마트 컨트렉트 시스템은 합당한 재사용을 최대화하는 것을 바라고 있습니다. 솔리디티 컨트렉트 코드 재사용 방법은 여러가지가 있습니다. 전에 디플로이(deployed) 된 *당신이 가지고 있는* 증명된 컨트렉트를 사용하는 것은 일반적으로 코드를 재사용하기 위한 안전한 방법 입니다.
 
-Duplication is frequently relied upon in cases where self-owned previously-deployed contracts are not available.  Efforts such as [Live Libs](https://github.com/ConsenSys/live-libs) and [Zeppelin Solidity](https://github.com/OpenZeppelin/zeppelin-solidity) seek to provide patterns such that secure code can be re-used without duplication.  Any contract security analyses must include any re-used code that has not previously established a level of trust commensurate with the funds at risk in the target smart contract system.
+복제는 당신이 가지고 있는 컨트렉트 중 전에 디플로이 되었던 컨트렉트를 사용할 수 없는 경우에 빈번하게 의존하게 됩니다. 복제 없이 재사용 가능한 안전한 코드 패턴을 찾아 제공하기 위해 [라이브 립스(Live Libs)](https://github.com/ConsenSys/live-libs)와 [제플린 솔리디티(Zeppelin Solidity)](https://github.com/OpenZeppelin/zeppelin-solidity)는 노력하고 있는 중 입니다. 모든 컨트렉트 보안 분석은 스마트 컨트렉트 시스템 목표의 자금 위험과 신뢰할만한 수준으로 사전에 인증(established)받지 못한 재사용 코드도 모두 포함 되어야 합니다.
 
 ## 安全通知
 

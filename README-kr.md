@@ -8,7 +8,7 @@
 ## 어디서부터 시작하죠?
 
 * [일반적인 철학 (General Philosophy)](./general_philosophy.md) 스마트 컨트렉트 보안 사고방식에 대해 설명합니다.
-* [Solidity Recommendations](./recommendations.md) 바람직한 코드 패턴의 예시를 담았습니다.
+* [솔리디티 추천들(Solidity Recommendations)](./recommendations.md) 바람직한 코드 패턴의 예시를 담았습니다.
 * [Known Attacks](./known_attacks.md) 다른 클래스들 간의 취약성을 피하는 방법을 설명합니다.
 * [Software Engineering](./software_engineering.md) 몇개의 아키텍쳐의 개요와 위험완화를 위한 디자인 접근법의 개요입니다.
 * [Documentation and Procedures](./documentation_procedures.md) 외부 개발자들과 감사원들(Auditors)을 위한 시스템 문서 작성법 연습 개요입니다.
@@ -103,18 +103,16 @@
 복제는 당신이 가지고 있는 컨트렉트 중 전에 디플로이 되었던 컨트렉트를 사용할 수 없는 경우에 빈번하게 의존하게 됩니다. 복제 없이 재사용 가능한 안전한 코드 패턴을 찾아 제공하기 위해 [라이브 립스(Live Libs)](https://github.com/ConsenSys/live-libs)와 [제플린 솔리디티(Zeppelin Solidity)](https://github.com/OpenZeppelin/zeppelin-solidity)는 노력하고 있는 중 입니다. 모든 컨트렉트 보안 분석은 스마트 컨트렉트 시스템 목표의 자금 위험과 신뢰할만한 수준으로 사전에 인증(established)받지 못한 재사용 코드도 모두 포함 되어야 합니다.
 
 
-## Recommendations for Smart Contract Security in Solidity
-This page demonstrates a number of solidity patterns which should generally be followed when writing smart contracts.
+## 솔리디티 스마트 컨트렉트 보안 권장사항들 (Recommendations for Smart Contract Security in Solidity)
+이 페이지는 스마트 컨트렉트를 작성할때 일반적으로 따르는 솔리디티 패턴 몇가지를 보여줍니다.
 
-## Protocol specific recommendations
+## 프로토콜 별 권장사항들
 
-### <!-- -->
+아래 권장사항들은 이더리움의 컨트렉트 시스템 개발에 적용됩니다.
 
-The following recommendations apply to the development of any contract system on Ethereum.
+## 외부 호출(External Calls)
 
-## External Calls
-
-### Use caution when making external calls
+### 외부 호출(external calls)를 구성할때 주의하세요
 
 Calls to untrusted contracts can introduce several unexpected risks or errors. External calls may execute malicious code in that contract _or_ any other contract that it depends upon. As such, every external call should be treated as a potential security risk. When it is not possible, or undesirable to remove external calls, use the recommendations in the rest of this section to minimize the danger.
 

@@ -114,8 +114,7 @@
 
 ### 외부 호출를 구성할때 주의하세요
 
-이윤아 바보~
-Calls to untrusted contracts can introduce several unexpected risks or errors. External calls may execute malicious code in that contract _or_ any other contract that it depends upon. As such, every external call should be treated as a potential security risk. When it is not possible, or undesirable to remove external calls, use the recommendations in the rest of this section to minimize the danger.
+믿을 수 없는 컨트렉트의 호출은 몇가지 기대하지 않은 위험이나 에러를 야기할 수 있습니다. 외부 호출은 다른 컨트렉트에 의존하는 컨트렉트 _또는_ 컨트렉트 내부의 악성 코드를 실행 시킬 수 있습니다. 보통 말하는 그런 모든 외부 호출은 잠재적인 보안 위험으로 처리해야 합니다. 그게 불가능해 지거나 외부 호출을 제거할 수 없다면, 이 섹션의 뒷부분에 있는 권장사항을 이용해 위험을 최소화 하세요.
 
 ### Mark untrusted contracts
 

@@ -116,9 +116,9 @@
 
 믿을 수 없는 컨트렉트의 호출은 몇가지 기대하지 않은 위험이나 에러를 야기할 수 있습니다. 외부 호출은 다른 컨트렉트에 의존하는 컨트렉트 _또는_ 컨트렉트 내부의 악성 코드를 실행 시킬 수 있습니다. 보통 말하는 그런 모든 외부 호출은 잠재적인 보안 위험으로 처리해야 합니다. 그게 불가능해 지거나 외부 호출을 제거할 수 없다면, 이 섹션의 뒷부분에 있는 권장사항을 이용해 위험을 최소화 하세요.
 
-### 믿을 수 없는 컨트렉트 표시 //Mark untrusted contracts
+### 믿을 수 없는 컨트렉트 표시
 
-When interacting with external contracts, name your variables, methods, and contract interfaces in a way that makes it clear that interacting with them is potentially unsafe. This applies to your own functions that call external contracts.
+외부에 있는 컨트렉트들, 변수들, 메소드들, 컨트렉트 인터페이스들과 상호작용을 할 때 명확하게 하는 방법으로 그들과 상호작용은 잠재적으로 불안전 합니다. 이것은 당신이 소유한 함수의 외부 호출 컨드렉트를 적용한 것 입니다.
 
 ```sol
 // bad
@@ -136,7 +136,6 @@ function makeUntrustedWithdrawal(uint amount) {
     UntrustedBank.withdraw(amount);
 }
 ```
-
 
 ### Avoid state changes after external calls
 

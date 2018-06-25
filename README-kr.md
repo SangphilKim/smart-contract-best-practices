@@ -116,21 +116,21 @@
 
 믿을 수 없는 컨트렉트의 호출은 몇가지 기대하지 않은 위험이나 에러를 야기할 수 있습니다. 외부 호출은 다른 컨트렉트에 의존하는 컨트렉트 _또는_ 컨트렉트 내부의 악성 코드를 실행 시킬 수 있습니다. 보통 말하는 그런 모든 외부 호출은 잠재적인 보안 위험으로 처리해야 합니다. 그게 불가능해 지거나 외부 호출을 제거할 수 없다면, 이 섹션의 뒷부분에 있는 권장사항을 이용해 위험을 최소화 하세요.
 
-### Mark untrusted contracts
+### 믿을 수 없는 컨트렉트 표시 //Mark untrusted contracts
 
 When interacting with external contracts, name your variables, methods, and contract interfaces in a way that makes it clear that interacting with them is potentially unsafe. This applies to your own functions that call external contracts.
 
 ```sol
 // bad
-Bank.withdraw(100); // Unclear whether trusted or untrusted
+Bank.withdraw(100); // 신뢰할 수 있는지 없는지 불명확함
 
-function makeWithdrawal(uint amount) { // Isn't clear that this function is potentially unsafe
+function makeWithdrawal(uint amount) { // 이 함수가 잠재적으로 불안한지에 대해 불명확함
     Bank.withdraw(amount);
 }
 
 // good
-UntrustedBank.withdraw(100); // untrusted external call
-TrustedBank.withdraw(100); // external but trusted bank contract maintained by XYZ Corp
+UntrustedBank.withdraw(100); // 신뢰할수 없는 외부 호출
+TrustedBank.withdraw(100); // 외부에 있지만 XYZ 회사에서 유지하고 있는 믿을 수 있는 은행 컨트렉트
 
 function makeUntrustedWithdrawal(uint amount) {
     UntrustedBank.withdraw(amount);

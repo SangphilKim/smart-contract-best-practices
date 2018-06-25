@@ -137,14 +137,13 @@ function makeUntrustedWithdrawal(uint amount) {
 }
 ```
 
-### Avoid state changes after external calls
+### 외부 호출 이후에 상태 변화를 피함
 
-Whether using *raw calls* (of the form `someAddress.call()`) or *contract calls* (of the form `ExternalContract.someMethod()`), assume that malicious code might execute. Even if `ExternalContract` is not malicious, malicious code can be executed by any contracts *it* calls.
+*로우 콜(raw calls)* [`someAddress.call()`과 같은 유형] 또는 *컨트렉트 콜(contract calls)* [`ExternalContract.someMethod()`과 같은 유형] 은 악성 코드가 실행 될 수 있습니다. `ExternalContract`가 악성 코드가 아니여도, *그것* 이 어떤 컨트렉트에 의해 호출되면 악성코드가 실행 될 수 있습니다.
 
-One particular danger is malicious code may hijack the control flow, leading to race conditions. (See [Race Conditions](./known_attacks#race-conditions) for a fuller discussion of this problem).
+한가지 더 큰 위험은 악성코드가 통제 흐름을 뺏을 수 있으며, 경합조건(race conditions)으로 이어지게 됩니다 ([경합 조건(Race Conditions)](./known_attacks#race-conditions)에서 이 문제에 대해 논의하고 있습니다).
 
-If you are making a call to an untrusted external contract, *avoid state changes after the call*. This pattern is also sometimes known as the [checks-effects-interactions pattern](http://solidity.readthedocs.io/en/develop/security-considerations.html?highlight=check%20effects#use-the-checks-effects-interactions-pattern).
-
+만약 당신이 신뢰할 수 없는 외부 컨트렉트를 호출한다면, *호출 이후에 상태를 바꾸는 것을 피하세요*. 이 패턴은 때때로 [확인-효과-작동 패턴 (checks-effects-interactions pattern)](http://solidity.readthedocs.io/en/develop/security-considerations.html?highlight=check%20effects#use-the-checks-effects-interactions-pattern) 이라고도 합니다.
 
 ### Be aware of the tradeoffs between `send()`, `transfer()`, and `call.value()()`
 

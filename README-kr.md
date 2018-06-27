@@ -145,10 +145,9 @@ function makeUntrustedWithdrawal(uint amount) {
 
 만약 당신이 신뢰할 수 없는 외부 컨트렉트를 호출한다면, *호출 이후에 상태를 바꾸는 것을 피하세요*. 이 패턴은 때때로 [확인-효과-작동 패턴 (checks-effects-interactions pattern)](http://solidity.readthedocs.io/en/develop/security-considerations.html?highlight=check%20effects#use-the-checks-effects-interactions-pattern) 이라고도 합니다.
 
-### Be aware of the tradeoffs between `send()`, `transfer()`, and `call.value()()`
+### `send()`와 `transfer()`, `call.value()()`의 사이 상충관계 인지 필요
 
-When sending ether be aware of the relative tradeoffs between the use of
-`someAddress.send()`, `someAddress.transfer()`, and `someAddress.call.value()()`.
+이더를 보낼때 `someAddress.send()`와 `someAddress.transfer()`, `someAddress.call.value()()` 사이에서 서로 상충되는 관계를 아셔야 합니다.
 
 - `someAddress.send()`and `someAddress.transfer()` are considered *safe* against [reentrancy](./known_attacks#reentrancy).
     While these methods still trigger code execution, the called contract is

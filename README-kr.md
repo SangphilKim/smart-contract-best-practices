@@ -164,17 +164,18 @@ function makeUntrustedWithdrawal(uint amount) {
 솔리디티는 가공되지 않은 주소에서 작동하는 로우-레벨 호출 메소드를 제공합니다: `address.call()`과 `address.callcode()`, `address.delegatecall()`, `address.send()`. 이러한 로우-레벨 메소드들은 예외처리(exception)로 보내지 않고, 호출이 예외처리에 걸리면 `false` 를 반환하게 됩니다.
 다른 한편으로, *컨트렉트 콜(contract calls)* (가령, `ExternalContract.doSomething()`)은 자동적으로 예외처리(throw)를 한다(예를 들어, `ExternalContract.doSomething()`는 `doSomething()`이 예외처리 하면 `throw` 하게 된다).
 
-If you choose to use the low-level call methods, make sure to handle the possibility that the call will fail, by checking the return value.
+만약에 로우-레벨 호출 메소드를 사용한다면, 반환 값 확인을 하면서 호출이 실패할 가능성을 명심해 두세요.
+
 
 ```sol
 // bad
 someAddress.send(55);
-someAddress.call.value(55)(); // this is doubly dangerous, as it will forward all remaining gas and doesn't check for result
-someAddress.call.value(100)(bytes4(sha3("deposit()"))); // if deposit throws an exception, the raw call() will only return false and transaction will NOT be reverted
+someAddress.call.value(55)(); // 이것은 두배로 위험하고, 남은 가스 전부를 사용하면서 결과를 확인할 수 없습니다.
+someAddress.call.value(100)(bytes4(sha3("deposit()"))); // 보증금(deposit)이 예외처리를 던지면, 로우 콜(raw call)은 false만 반환하고 트렌젝션은 복구되지 않습니다.
 
 // good
 if(!someAddress.send(55)) {
-    // Some failure code
+    // 실패 코드가 몇개 있음
 }
 
 ExternalContract(someAddress).deposit.value(100);

@@ -149,24 +149,15 @@ function makeUntrustedWithdrawal(uint amount) {
 
 이더를 보낼때 `someAddress.send()`와 `someAddress.transfer()`, `someAddress.call.value()()` 사이에서 서로 상충되는 관계를 아셔야 합니다.
 
-- `someAddress.send()`and `someAddress.transfer()` are considered *safe* against [reentrancy](./known_attacks#reentrancy).
-    While these methods still trigger code execution, the called contract is
-    only given a stipend of 2,300 gas which is currently only enough to log an
-    event.
-- `x.transfer(y)` is equivalent to `require(x.send(y));`, it will automatically revert if the send fails.
-- `someAddress.call.value(y)()` will send the provided ether and trigger code execution.  
-    The executed code is given all available gas for execution making this type of value transfer *unsafe* against reentrancy.
+- `someAddress.send()`와 `someAddress.transfer()`는 [재진입(reentrancy)](./known_attacks#reentrancy)에 대응하는 *안전함* 이 고려되어야 합니다. 이러한 메소드들이 코드를 실행시키는 순간, 호출 당한 컨트렉트는 사용료로 현재 이벤트 로그 용도으로 충분한 2,300 가스만 받습니다.
+- `x.transfer(y)`와 `require(x.send(y));`는 같지만, 후자는 전송이 실패하면 자동적으로 회귀(revert)됩니다.
+- `someAddress.call.value(y)()` 는 이더와 실행 코드를 전송하게 됩니다. 실행 코드는 재진입에 반하는 *불안전* 값을 전송하는 타입으로 실행을 위해 가능한 모든 가스가 주어집니다.
 
-Using `send()` or `transfer()` will prevent reentrancy but it does so at the cost of being incompatible with any contract whose fallback function requires more than 2,300 gas. It is also possible to use `someAddress.call.value(ethAmount).gas(gasAmount)()` to forward a custom amount of gas.
+`send()` 또는 `transfer()`을 사용하는 것은 재진입을 방지하지만 2,300 가스보다 더 필요로 하는 폴백 함수(fallback function)가 있는 컨트렉트는 비용적으로 부적합하게 된다. 사용할 가스의 량을 설정하는 `someAddress.call.value(ethAmount).gas(gasAmount)()` 를 사용하는 것도 가능합니다.
 
-One pattern that attempts to balance this trade-off is to implement both
-a [*push* and *pull*](#favor-pull-over-push-for-external-calls) mechanism, using `send()` or `transfer()`
-for the *push* component and `call.value()()` for the *pull* component.
+한가지 패턴으로 *푸시(push)* 컴포넌트를 위해 `send()` 또는 `transfer()`를 사용하거나 *풀(pull)* 컴포넌트를 위해 `call.value()()`를 사용하는 것과 같은, 즉 [*푸시(push)* and *풀(pull)*](#favor-pull-over-push-for-external-calls) 메카니즘을 사용해 이런 상충관계의 균형잡기를 시도해야 합니다.
 
-It is worth pointing out that exclusive use of `send()` or `transfer()` for value transfers
-does not itself make a contract safe against reentrancy but only makes those
-specific value transfers safe against reentrancy.
-
+`send()` 또는 `transfer()`의 배타적인 사용은 짚고 넘어갈 가치가 있는데 값 전송을 위해 재진입에 대응하는 안전한 컨트렉트를 스스로 만들 것이 아니라 그것들의 명확한 값을 만들어 전송하는 것을 추천합니다. 
 
 ### Handle errors in external calls
 

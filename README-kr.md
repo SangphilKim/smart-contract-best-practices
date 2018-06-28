@@ -157,11 +157,12 @@ function makeUntrustedWithdrawal(uint amount) {
 
 한가지 패턴으로 *푸시(push)* 컴포넌트를 위해 `send()` 또는 `transfer()`를 사용하거나 *풀(pull)* 컴포넌트를 위해 `call.value()()`를 사용하는 것과 같은, 즉 [*푸시(push)* and *풀(pull)*](#favor-pull-over-push-for-external-calls) 메카니즘을 사용해 이런 상충관계의 균형잡기를 시도해야 합니다.
 
-`send()` 또는 `transfer()`의 배타적인 사용은 짚고 넘어갈 가치가 있는데 값 전송을 위해 재진입에 대응하는 안전한 컨트렉트를 스스로 만들 것이 아니라 그것들의 명확한 값을 만들어 전송하는 것을 추천합니다. 
+`send()` 또는 `transfer()`의 배타적인 사용은 짚고 넘어갈 가치가 있는데 값 전송을 위해 재진입에 대응하는 안전한 컨트렉트를 스스로 만들 것이 아니라 그것들의 명확한 값을 만들어 전송해야 합니다.
 
-### Handle errors in external calls
+### 외부 호출의 에러 다루기
 
-Solidity offers low-level call methods that work on raw addresses: `address.call()`, `address.callcode()`, `address.delegatecall()`, and `address.send()`. These low-level methods never throw an exception, but will return `false` if the call encounters an exception. On the other hand, *contract calls* (e.g., `ExternalContract.doSomething()`) will automatically propagate a throw (for example, `ExternalContract.doSomething()` will also `throw` if `doSomething()` throws).
+솔리디티는 가공되지 않은 주소에서 작동하는 로우-레벨 호출 메소드를 제공합니다: `address.call()`과 `address.callcode()`, `address.delegatecall()`, `address.send()`. 이러한 로우-레벨 메소드들은 예외처리(exception)로 보내지 않고, 호출이 예외처리에 걸리면 `false` 를 반환하게 됩니다.
+다른 한편으로, *컨트렉트 콜(contract calls)* (가령, `ExternalContract.doSomething()`)은 자동적으로 예외처리(throw)를 한다(예를 들어, `ExternalContract.doSomething()`는 `doSomething()`이 예외처리 하면 `throw` 하게 된다).
 
 If you choose to use the low-level call methods, make sure to handle the possibility that the call will fail, by checking the return value.
 

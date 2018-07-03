@@ -228,9 +228,9 @@ contract auction {
 }
 ```
 
-## Don't assume contracts are created with zero balance
+## 만들어진 컨트렉트의 잔액이 없을 것이라고 추정하지 마세요
 
-An attacker can send wei to the address of a contract before it is created.  Contracts should not assume that its initial state contains a zero balance.  See [issue 61](https://github.com/ConsenSys/smart-contract-best-practices/issues/61) for more details.
+공격자(attacker)는 생성 전의 컨트렉트 주소에 웨이(wei)를 보낼 수 있습니다. 컨트렉트의 최초 상태 잔액이 0 이라고 가정하시면 안됩니다. [issue 61](https://github.com/ConsenSys/smart-contract-best-practices/issues/61) 을 보시면 더 자세한 내용이 있습니다.
 
 ## Remember that on-chain data is public
 

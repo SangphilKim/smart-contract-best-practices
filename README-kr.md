@@ -183,11 +183,7 @@ ExternalContract(someAddress).deposit.value(100);
 
 ### 외부 호출시 *pull* 보다 *push* 를 선호
 
-외부 호출은 우연하게 또는 고의적으로 실패 할 수 있습니다. 이런 실패의 피해를 최소화하기 위해, 호출의 수신자(recipient)에 의해 시작할 수 있는 트렌젝션을 담고 있는 각각의 외부 호출은 분리 시키는 것이 종종 더 낫습니다.
-
-
-
-This is especially relevant for payments, where it is better to let users withdraw funds rather than push funds to them automatically. (This also reduces the chance of [problems with the gas limit](./known_attacks#dos-with-block-gas-limit).)  Avoid combining multiple `send()` calls in a single transaction.
+외부 호출은 우연하게 또는 고의적으로 실패 할 수 있습니다. 이런 실패의 피해를 최소화하기 위해, 호출의 수신자(recipient)에 의해 시작할 수 있는 트렌젝션을 담고 있는 각각의 외부 호출은 분리 시키는 것이 종종 더 낫습니다. 이것은 특히 결제쪽과 관련있는데, 사용자가 스스로 자금을 인출하는 것 보다는 자동으로 그들에게 자금이 보내지게 하는 것이 더 낫습니다. (이것은 [가스 제한 관련문제(problems with the gas limit)](./known_attacks#dos-with-block-gas-limit) 가능성도 줄입니다.) 단일 트렌젝션에서 여러 개의 `send()` 호출을 묶지 마세요.
 
 ```sol
 // bad
@@ -199,7 +195,7 @@ contract auction {
         require(msg.value >= highestBid);
 
         if (highestBidder != 0) {
-            highestBidder.transfer(highestBid); // if this call consistently fails, no one else can bid
+            highestBidder.transfer(highestBid); // 만약 이 호출이 지속적으로 실패하면, 아무도 입찰 할 수 없습니다
         }
 
        highestBidder = msg.sender;
@@ -217,7 +213,7 @@ contract auction {
         require(msg.value >= highestBid);
 
         if (highestBidder != 0) {
-            refunds[highestBidder] += highestBid; // record the refund that this user can claim
+            refunds[highestBidder] += highestBid; // 이 사용자가 요구할 수 있는 환불내용을 기록
         }
 
         highestBidder = msg.sender;

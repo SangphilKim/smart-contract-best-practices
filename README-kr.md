@@ -181,10 +181,13 @@ if(!someAddress.send(55)) {
 ExternalContract(someAddress).deposit.value(100);
 ```
 
+### 외부 호출시 *pull* 보다 *push* 를 선호
 
-### Favor *pull* over *push* for external calls
+외부 호출은 우연하게 또는 고의적으로 실패 할 수 있습니다. 이런 실패의 피해를 최소화하기 위해, 호출의 수신자(recipient)에 의해 시작할 수 있는 트렌젝션을 담고 있는 각각의 외부 호출은 분리 시키는 것이 종종 더 낫습니다.
 
-External calls can fail accidentally or deliberately. To minimize the damage caused by such failures, it is often better to isolate each external call into its own transaction that can be initiated by the recipient of the call. This is especially relevant for payments, where it is better to let users withdraw funds rather than push funds to them automatically. (This also reduces the chance of [problems with the gas limit](./known_attacks#dos-with-block-gas-limit).)  Avoid combining multiple `send()` calls in a single transaction.
+
+
+This is especially relevant for payments, where it is better to let users withdraw funds rather than push funds to them automatically. (This also reduces the chance of [problems with the gas limit](./known_attacks#dos-with-block-gas-limit).)  Avoid combining multiple `send()` calls in a single transaction.
 
 ```sol
 // bad

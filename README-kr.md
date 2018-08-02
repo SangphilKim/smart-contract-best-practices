@@ -232,7 +232,7 @@ contract auction {
 
 공격자(attacker)는 생성 전의 컨트렉트 주소에 웨이(wei)를 보낼 수 있습니다. 컨트렉트의 최초 상태 잔액이 0 이라고 가정하시면 안됩니다. [issue 61](https://github.com/ConsenSys/smart-contract-best-practices/issues/61) 을 보시면 더 자세한 내용이 있습니다.
 
-## Remember that on-chain data is public
+## 온체인(on-chain)데이터는 공공(public)이라는 것을 기억하세요
 
 Many applications require submitted data to be private up until some point in time in order to work. Games (eg. on-chain rock-paper-scissors) and auction mechanisms (eg. sealed-bid second-price auctions) are two major categories of examples. If you are building an application where privacy is an issue, take care to avoid requiring users to publish information too early.
 

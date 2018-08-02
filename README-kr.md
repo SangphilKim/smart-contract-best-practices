@@ -234,14 +234,14 @@ contract auction {
 
 ## 온체인(on-chain)데이터는 공공(public)이라는 것을 기억하세요
 
-Many applications require submitted data to be private up until some point in time in order to work. Games (eg. on-chain rock-paper-scissors) and auction mechanisms (eg. sealed-bid second-price auctions) are two major categories of examples. If you are building an application where privacy is an issue, take care to avoid requiring users to publish information too early.
+많은 어플리케이션들은 작동을 위해서 특정 시점에 사적인 데이터 제출을 요구합니다. 게임들 (예. on-chain rock-paper-scissors) 과 경매 메카니즘들 (예. sealed-bid second-price auctions) 은 예시들 중에서 두가지 큰 카테고리 입니다. 만약 당신이 프라이버시와 관련있는 어플리케이션을 제작하는 경우, 사용자 정보를 너무 빠르게 게시(publish) 하지 않도록 주의하세요.
 
-Examples:
+예시:
 
-* In rock paper scissors, require both players to submit a hash of their intended move first, then require both players to submit their move; if the submitted move does not match the hash throw it out.
-* In an auction, require players to submit a hash of their bid value in an initial phase (along with a deposit greater than their bid value), and then submit their action bid value in the second phase.
-* When developing an application that depends on a random number generator, the order should always be (1) players submit moves, (2) random number generated, (3) players paid out. The method by which random numbers are generated is itself an area of active research; current best-in-class solutions include Bitcoin block headers (verified through http://btcrelay.org), hash-commit-reveal schemes (ie. one party generates a number, publishes its hash to "commit" to the value, and then reveals the value later) and [RANDAO](http://github.com/randao/randao).
-* If you are implementing a frequent batch auction, a hash-commit scheme is also desirable.
+* rock paper scissors에서, 양쪽의 플레이어는 그들이 의도한 첫번째 움직임 해시를 제출 해야하고, 두 플레이어 모두 이동을 요구해야 합니다; 만약 제출된 움직임과 일치하지 않는다면 해시는 버리게 됩니다.
+* 경매에서, 플레이어들은 초기단계 (입찰가 보다 큰 예치금과 함께) 에서 그들이 제시한 값의 해시를 제출해야 하며, 두번째 단계에서 그들이 제시한 입찰가를 제출하게 된다.
+* 난수 생성기 (random number generator) 를 필요로 하는 어플리케이션 개발을 할때, 순서는 항상 (1) 플레이어가 움직임을 제출하고, (2) 난수가 생성되고, (3) 플레이어가 지불(paid out)하는 방식이어야 한다. 난수 생성 방법은 그 자체가 활발한 연구 분야 입니다; 현재 최고의 방법 (best-in-class solutions) 으로 http://btcrelay.org 를 통해 인증된 비트코인 블록 헤더를 포함하는 법, 해시-커밋-리빌 스킴 (hash-commit-reveal schemes, 예. 한 파티가 숫자를 생성하고, 해시를 게시하여 값을 "커밋"한 다음, 나중에 값을 나타냅니다.) 그리고  [RANDAO](http://github.com/randao/randao) 입니다.
+* 만약 당신이 빈번한 일괄 경매 (frequent batch auction) 절차를 구현하는 경우, 해시-커밋 스킴 (hash-commit scheme) 이 바람직 합니다.
 
 ## In 2-party or N-party contracts, beware of the possibility that some participants may "drop offline" and not return
 

@@ -243,9 +243,9 @@ contract auction {
 * 난수 생성기 (random number generator) 를 필요로 하는 어플리케이션 개발을 할때, 순서는 항상 (1) 플레이어가 움직임을 제출하고, (2) 난수가 생성되고, (3) 플레이어가 지불(paid out)하는 방식이어야 한다. 난수 생성 방법은 그 자체가 활발한 연구 분야 입니다; 현재 최고의 방법 (best-in-class solutions) 으로 http://btcrelay.org 를 통해 인증된 비트코인 블록 헤더를 포함하는 법, 해시-커밋-리빌 스킴 (hash-commit-reveal schemes, 예. 한 파티가 숫자를 생성하고, 해시를 게시하여 값을 "커밋"한 다음, 나중에 값을 나타냅니다.) 그리고  [RANDAO](http://github.com/randao/randao) 입니다.
 * 만약 당신이 빈번한 일괄 경매 (frequent batch auction) 절차를 구현하는 경우, 해시-커밋 스킴 (hash-commit scheme) 이 바람직 합니다.
 
-## In 2-party or N-party contracts, beware of the possibility that some participants may "drop offline" and not return
+## 2개 집단 또는 N개 집단의 컨트랙트들에서 몇몇 참여자들이 "행동을 거부"하고 다시는 돌아오지 않을 가능성이 있다는 것을 알고 있어야 합니다.
 
-Do not make refund or claim processes dependent on a specific party performing a particular action with no other way of getting the funds out. For example, in a rock-paper-scissors game, one common mistake is to not make a payout until both players submit their moves; however, a malicious player can "grief" the other by simply never submitting their move - in fact, if a player sees the other player's revealed move and determines that they lost, they have no reason to submit their own move at all. This issue may also arise in the context of state channel settlement. When such situations are an issue, (1) provide a way of circumventing non-participating participants, perhaps through a time limit, and (2) consider adding an additional economic incentive for participants to submit information in all of the situations in which they are supposed to do so.
+자금을 빼낼 다른 방법이 없는 특정 행동을 수행하는 특정 집단에 의존하는 환불이나 요청 절차들을 만들지 마세요. 예를 들어, 가위바위보 게임의 흔한 실수는 두 플레이어가 그들의 행동을 제출하지 전까지 지불을 하지 않는 것입니다; 그러나, 악의적인 플레이어는 단순히 행동을 제출하지 않음으로써 상대방이 "상심하게" 만들 수 있습니다 - 사실, 플레이어가 상대방의 노출된 행동을 보고 그들이 지도록 결정한다면, 상대방은 그들의 행동을 제출할 이유가 전혀 없습니다. 이 문제는 상태 채널 합의 컨텍스트(context)에서 다시 발생하게 됩니다. 이런 상황들이 문제인 경우, (1) 초대받지 않은 참여자들을 피할 수 있는 방법(아마, 시간 제한을 통해)을 제공하고, (2) 모든 경우에 있어서 의도한대로 정보를 제출하는 참여자들을 위해 경제적 장려금을 추가하는 것을 고려해야 합니다.
 
 ## Solidity specific recommendations
 

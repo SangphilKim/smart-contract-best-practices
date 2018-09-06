@@ -279,18 +279,18 @@ contract Token {
 
 솔리디티 0.4.10에서 `assert()`와 `require()`가 소개되었습니다. `require(조건)`는 입력에 대한 유효성 검사에 사용됩니다. 모든 사용자의 입력에 대해 행해지며, 조건이 거짓(false)일 경우 회귀(revert)하게 됩니다. `assert(조건)` 또한 조건이 거짓일 경우 회귀하게 되지만 불변성에 대해서만 사용하게 됩니다: 내부 오류 또는 당신의 컨트랙트가 유효하지 않은 상태에 이르렀는지를 확인합니다. 이 패러다임을 따르게 되면 유효하지 않은 명령어에 도달하는 것을 정식 분석 도구들로 검증할 수 있습니다.
 
-## Beware rounding with integer division
+## 정수 나눗셈의 라운딩(Rounding)을 조심하세요.
 
-All integer division rounds down to the nearest integer. If you need more precision, consider using a multiplier, or store both the numerator and denominator.
+모든 정수의 나눗셈은 가장 근접한 정수로 내림합니다. 만약 당신이 더 정교한 값을 원한다면, 승수(multiplier)을 사용하거나 분자(numerator)와 분모(denominator)를 모두 저장하는 것을 고려하세요.
 
-(In the future, Solidity will have a fixed-point type, which will make this easier.)
+(미래에는, 솔리디티는 고정소숫점 방식을 가질 것이며, 라운딩을 더욱 쉽게 만들 것입니다.)
 
 ```sol
 // bad
-uint x = 5 / 2; // Result is 2, all integer divison rounds DOWN to the nearest integer
+uint x = 5 / 2; // 결과는 2 입니다. 모든 정수의 나눗셈은 가장 근접한 정수로 내림합니다.
 ```
 
-Using a multiplier prevents rounding down, this multiplier needs to be accounted for when working with x in the future:
+곱셈을 사용하는 것은 내림을 방지할 수 있습니다. 이 승수는 미래에 x를 사용시 계산을 위해 필요합니다:
 
 ```sol
 // good
@@ -298,7 +298,7 @@ uint multiplier = 10;
 uint x = (5 * multiplier) / 2;
 ```
 
-Storing the numerator and denominator means you can calculate the result of `numerator/denominator` off-chain:
+분자와 분모를 저장하는 것은 당신이 `분자/분모`의 결과를 체인 외부에서 계산할 수 있다는 것을 의미합니다:
 ```sol
 // good
 uint numerator = 5;

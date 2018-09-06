@@ -272,7 +272,7 @@ contract Token {
 }
 ```
 
-컨트랙트가 `deposit()` 함수를 통하지 않아도 [강제로 이더를 전송](#remember-that-ether-can-be-forcibly-sent-to-an-account)할 수 있기 때문에 표명은 잔액에 대한 등식에 엄격하지 *않습니다*!
+컨트랙트가 `deposit()` 함수를 통하지 않아도 [이더가 강제로 전송](#remember-that-ether-can-be-forcibly-sent-to-an-account)될 수 있기 때문에 표명은 잔액에 대한 등식에 엄격하지 *않습니다*!
 
 
 ## `assert()`와 `require()`를 적절히 사용하세요.
@@ -305,15 +305,13 @@ uint numerator = 5;
 uint denominator = 2;
 ```
 
-## Remember that Ether can be forcibly sent to an account
+## 이더가 강제로 계좌로 전송될 수 있다는 것을 기억하세요.
 
-Beware of coding an invariant that strictly checks the balance of a contract.
+컨트랙트의 잔액을 엄격히 확인하는 불변성을 코딩하는 것을 조심하세요.
 
-An attacker can forcibly send wei to any account and this cannot be prevented (not even with a fallback function that does a `revert()`).
+공격자는 강제로 웨이(wei)를 어떤 계좌에라도 보낼 수 있으며 강제로 이더가 전송되는 것을 방지할 수는 없습니다 (`revert()`를 실행하는 폴백 함수라도 이것을 방지할 수 없습니다).
 
-The attacker can do this by creating a contract, funding it with 1 wei, and invoking
-`selfdestruct(victimAddress)`.  No code is invoked in `victimAddress`, so it
-cannot be prevented.
+공격자는 컨트랙트를 생성하고, 그것에 1 wei를 보내고 `selfdestruct(victimAddress)`를 호출함으로써 강제로 이더를 전송할 수 있습니다. 아무런 코드도 `victimAddress`에서 호출되지 않으므로, 방지할 수 없습니다.
 
 ## Be aware of the tradeoffs between abstract contracts and interfaces
 

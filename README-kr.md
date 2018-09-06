@@ -313,9 +313,9 @@ uint denominator = 2;
 
 공격자는 컨트랙트를 생성하고, 그것에 1 wei를 보내고 `selfdestruct(victimAddress)`를 호출함으로써 강제로 이더를 전송할 수 있습니다. 아무런 코드도 `victimAddress`에서 호출되지 않으므로, 방지할 수 없습니다.
 
-## Be aware of the tradeoffs between abstract contracts and interfaces
+## 추상 컨트랙트와 인터페이스 사이의 트레이드오프(tradeoff)를 알아야 합니다.
 
-Both interfaces and abstract contracts provide one with a customizable and re-usable approach for smart contracts. Interfaces, which were introduced in Solidity 0.4.11, are similar to abstract contracts but cannot have any functions implemented. Interfaces also have limitations such as not being able to access storage or inherit from other interfaces which generally makes abstract contracts more practical. Although, interfaces are certainly useful for designing contracts prior to implementation. Additionally, it is important to keep in mind that if a contract inherits from an abstract contract it must implement all non-implemented functions via overriding or it will be abstract as well.
+인터페이스와 추상 컨트랙트는 둘 다 스마트 컨트랙트를 위한 사용자 정의 및 재사용이 가능한 접근을 제공합니다. 솔리디티 0.4.11에 도입된 인터페이스는 추상 컨트랙트와 유사하지만 구현된 함수를 가질 수 없습니다. 또한 인터페이스는 일반적으로 추상 컨트랙트를 더 실용적으로 만들어주는 저장소에 대한 접속 또는 다른 인터페이스로부터의 상속과 같은 기능들이 불가능하다는 한계점을 가지고 있습니다. 하지만 인터페이스는 구현에 앞서 컨트랙트를 설계하는데 확실히 유용합니다. 추가로 만약 컨트랙트가 추상 컨트랙트로부터 상속받았다면 구현되지 않은 함수들을 오버라이딩(overriding)을 통해 반드시 구현해야 하며 그렇지 않는다면 이 컨트랙트 또한 추상 컨트랙트가 된다는 사실을 명심해야 합니다.
 
 ## Keep fallback functions simple
 

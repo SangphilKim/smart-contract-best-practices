@@ -331,7 +331,19 @@ function deposit() payable external { balances[msg.sender] += msg.value; }
 function() payable { LogDepositReceived(msg.sender); }
 ```
 
-## Explicitly mark visibility in functions and state variables
+## 폴백 함수의 데이터 길이를 확인하세요.
+
+[폴백 함수](http://solidity.readthedocs.io/en/latest/contracts.html#fallback-function)는 평범한 이더 전송을 위해서 뿐만 아니라 다른 함수가 일치하지 않을 때에도 호출되기 때문에, 폴백 함수가 이더를 받는 것을 기록하기 위한 목적만 사용되었을 경우 데이터가 비어있는지 확인해야만 합니다. 그렇지 않으면, 호출자는 당신의 컨트랙트가 부정확하게 사용되었고 존재하지 않는 함수들이 호출되었는지를 알 수 없습니다.
+
+```sol
+// bad
+function() payable { LogDepositReceived(msg.sender); }
+
+// good
+function() payable { require(msg.data.length == 0); LogDepositReceived(msg.sender); }
+```
+
+## 함수와 상태 변수들의 가시성을 분명하게 표시하세요.
 
 Explicitly label the visibility of functions and state variables. Functions can be specified as being `external`, `public`, `internal` or `private`. Please understand the differences between them, for example, `external` may be sufficient instead of `public`. For state variables, `external` is not possible. Labeling the visibility explicitly will make it easier to catch incorrect assumptions about who can call the function or access the variable.
 

@@ -317,9 +317,9 @@ uint denominator = 2;
 
 인터페이스와 추상 컨트랙트는 둘 다 스마트 컨트랙트를 위한 사용자 정의 및 재사용이 가능한 접근을 제공합니다. 솔리디티 0.4.11에 도입된 인터페이스는 추상 컨트랙트와 유사하지만 구현된 함수를 가질 수 없습니다. 또한 인터페이스는 일반적으로 추상 컨트랙트를 더 실용적으로 만들어주는 저장소에 대한 접속 또는 다른 인터페이스로부터의 상속과 같은 기능들이 불가능하다는 한계점을 가지고 있습니다. 하지만 인터페이스는 구현에 앞서 컨트랙트를 설계하는데 확실히 유용합니다. 추가로 만약 컨트랙트가 추상 컨트랙트로부터 상속받았다면 구현되지 않은 함수들을 오버라이딩(overriding)을 통해 반드시 구현해야 하며 그렇지 않는다면 이 컨트랙트 또한 추상 컨트랙트가 된다는 사실을 명심해야 합니다.
 
-## Keep fallback functions simple
+## 폴백 함수의 간결하게 유지하세요.
 
-[Fallback functions](http://solidity.readthedocs.io/en/latest/contracts.html#fallback-function) are called when a contract is sent a message with no arguments (or when no function matches), and only has access to 2,300 gas when called from a `.send()` or `.transfer()`. If you wish to be able to receive Ether from a `.send()` or `.transfer()`, the most you can do in a fallback function is log an event. Use a proper function if a computation or more gas is required.
+[폴백 함수](http://solidity.readthedocs.io/en/latest/contracts.html#fallback-function)는 컨트랙트가 인자 없이 메시지를 보냈을 경우 호출됩니다 (또는 일치하는 함수가 없을 경우). 그리고 `.send()` 또는 `.transfer()`로부터 호출되었을 때 2,300 가스만을 사용해 접근할 수 있습니다. 만약 당신이 `.send()` 또는 `.transfer()`로부터 이더를 받는 것이 가능하게 되는 것을 원한다면, 당신이 폴백 함수 내에서 할 수 있는 가장 많은 것은 이벤트를 로그로 남기는 것입니다. 더 많은 연산이나 가스가 필요하다면 적당한 함수를 사용하세요.
 
 ```sol
 // bad

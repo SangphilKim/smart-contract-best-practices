@@ -247,17 +247,17 @@ contract auction {
 
 자금을 빼낼 다른 방법이 없는 특정 행동을 수행하는 특정 집단에 의존하는 환불이나 요청 절차들을 만들지 마세요. 예를 들어, 가위바위보 게임의 흔한 실수는 두 플레이어가 그들의 행동을 제출하지 전까지 지불을 하지 않는 것입니다; 그러나, 악의적인 플레이어는 단순히 행동을 제출하지 않음으로써 상대방이 "상심하게" 만들 수 있습니다 - 사실, 플레이어가 상대방의 노출된 행동을 보고 그들이 지도록 결정한다면, 상대방은 그들의 행동을 제출할 이유가 전혀 없습니다. 이 문제는 상태 채널 합의 컨텍스트(context)에서 다시 발생하게 됩니다. 이런 상황들이 문제인 경우, (1) 초대받지 않은 참여자들을 피할 수 있는 방법(아마, 시간 제한을 통해)을 제공하고, (2) 모든 경우에 있어서 의도한대로 정보를 제출하는 참여자들을 위해 경제적 장려금을 추가하는 것을 고려해야 합니다.
 
-## Solidity specific recommendations
+## Solidity 관련 권장 사항
 
 ### <!-- -->
 
-The following recommendations are specific to Solidity, but may also be instructive for developing smart contracts in other languages.
+다음 권장 사항은 솔리디티에 특정한 내용이지만, 다른 언어들로 스마트 컨트랙트를 개발하는 것에도 도움이 될 수 있습니다.
 
-## Enforce invariants with `assert()`
+## `assert()`를 사용하여 불변성을 강제로 적용시키세요.
 
-An assert guard triggers when an assertion fails - such as an invariant property changing. For example, the token to ether issuance ratio, in a token issuance contract, may be fixed. You can verify that this is the case at all times with an `assert()`. Assert guards should often be combined with other techniques, such as pausing the contract and allowing upgrades. (Otherwise, you may end up stuck, with an assertion that is always failing.)
+표명 보호(assert guard)는 표명이 실패했을 경우 작동합니다 - 불변해야하는 속성이 변경되었을 경우. 예를 들어, 토큰 발행 컨트랙트에서 토큰 대 이더 발행 비율은 고정되어 있어야 합니다. 당신은 `assert()`를 사용해 이 비율이 고정되어 있다는 사실이 모든 경우에 같다는 것을 검증할 수 있습니다. 표명 보호는 컨트랙트를 중단시키거나 업그레이드를 허용하는 것과 같은 경우에 다른 기법들과 함께 자주 사용되어야만 합니다.(그렇지 않는다면, 표명이 항상 실패하는 경우 당신은 그 상황에 갇히게 될 것입니다.)
 
-Example:
+예시:
 
 ```sol
 contract Token {
@@ -272,12 +272,12 @@ contract Token {
 }
 ```
 
-Note that the assertion is *not* a strict equality of the balance because the contract can be [forcibly sent ether](#remember-that-ether-can-be-forcibly-sent-to-an-account) without going through the `deposit()` function!
+컨트랙트가 `deposit()` 함수를 통하지 않아도 [강제로 이더를 전송](#remember-that-ether-can-be-forcibly-sent-to-an-account)할 수 있기 때문에 표명은 잔액에 대한 등식에 엄격하지 *않습니다*!
 
 
-## Use `assert()` and `require()` properly
+## `assert()`와 `require()`를 적절히 사용하세요.
 
-In Solidity 0.4.10 `assert()` and `require()` were introduced. `require(condition)` is meant to be used for input validation, which should be done on any user input, and reverts if the condition is false. `assert(condition)` also reverts if the condition is false but should be used only for invariants: internal errors or to check if your contract has reached an invalid state. Following this paradigm allows formal analysis tools to verify that the invalid opcode can never be reached: meaning no invariants in the code are violated and that the code is formally verified.
+솔리디티 0.4.10에서 `assert()`와 `require()`가 소개되었습니다. `require(조건)`는 입력에 대한 유효성 검사에 사용됩니다. 모든 사용자의 입력에 대해 행해지며, 조건이 거짓(false)일 경우 회귀(revert)하게 됩니다. `assert(조건)` 또한 조건이 거짓일 경우 회귀하게 되지만 불변성에 대해서만 사용하게 됩니다: 내부 오류 또는 당신의 컨트랙트가 유효하지 않은 상태에 이르렀는지를 확인합니다. 이 패러다임을 따르게 되면 유효하지 않은 명령어에 도달하는 것을 정식 분석 도구들로 검증할 수 있습니다.
 
 ## Beware rounding with integer division
 

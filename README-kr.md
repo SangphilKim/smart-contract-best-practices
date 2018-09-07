@@ -422,8 +422,9 @@ contract ExampleContract is PretendingToRevert {
 
 컨트랙트 사용자들 (그리고 감사원들)은 그들이 사용하고자 하는 어플리케이션의 모든 스마트 컨트랙트 소스 코드를 잘 알고 있어야 합니다.
 
-## Avoid using `tx.origin`
+## `tx.origin`를 사용하지 마세요.
 
+`tx.origin`을 인가(authorization)에 절대로 사용하지 마세요. 다른 컨트랙트는 당신의 컨트랙트를 호출할 수 있는 메서드를 가지고 있을 수 있고 당신의 컨트랙트는 그 트랜잭션을 `tx.origin`의 당신의 주소로 인가할 것입니다.
 Never use `tx.origin` for authorization, another contract can have a method which will call your contract (where the user has some funds for instance) and your contract will authorize that transaction as your address is in `tx.origin`.
 
 ```
@@ -461,13 +462,13 @@ contract AttackingContract {
 }
 ```
 
-You should use `msg.sender` for authorization (if another contract calls your contract `msg.sender` will be the address of the contract and not the address of the user who called the contract).
+당신은 인가를 위해 `msg.sender`를 사용해야 합니다 (만약 다른 컨트랙트가 당신의 컨트랙트를 호출한다면 `msg.sender`는 그 컨트랙트의 주소가 될 것이며 그 컨트랙트를 호출한 사용자의 주소가 되지 않습니다).
 
-You can read more about it here: [Solidity docs](https://solidity.readthedocs.io/en/develop/security-considerations.html#tx-origin)
+더 자세한 내용은 이곳에서 확인하세요: [Solidity docs](https://solidity.readthedocs.io/en/develop/security-considerations.html#tx-origin)
 
-Besides the issue with authorization, there is a chance that `tx.origin` will be removed from the Ethereum protocol in the future, so code that uses `tx.origin` won't be compatible with future releases [Vitalik: 'Do NOT assume that tx.origin will continue to be usable or meaningful.'](https://ethereum.stackexchange.com/questions/196/how-do-i-make-my-dapp-serenity-proof/200#200)
+인가에 대한 문제 외에도, `tx.origin`이 미래에 이러리움 프로토콜에서 사라질 가능성이 있습니다. 그러므로 `tx.origin`을 사용하는 코드는 미래의 출시버전과는 호환되지 않을 것입니다 ([비탈릭: 'tx.origin이 계속해서 사용가능하거나 의미가 있을거라 가정하지 마십시오.'](https://ethereum.stackexchange.com/questions/196/how-do-i-make-my-dapp-serenity-proof/200#200)).
 
-It's also worth mentioning that by using `tx.origin` you're limiting interoperability between contracts because the contract that uses tx.origin cannot be used by another contract as a contract can't be the `tx.origin`.
+또한 `tx.origin`을 사용하게 되면 당신은 컨트랙트들 간의 상호운용성을 제한할 수 있습니다. 왜냐하면 tx.origin을 사용하는 컨트랙트는 컨트랙트가 `tx.origin`이 될 수 없기 때문에 다른 컨트랙트에 의해 사용될 수 없습니다.
 
 ## Timestamp Dependence
 

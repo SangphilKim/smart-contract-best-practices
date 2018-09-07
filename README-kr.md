@@ -386,9 +386,9 @@ pragma solidity 0.4.4;
 
 라이브러리나 EthPM 패키지 내의 컨트랙트의 경우와 같이, 컨트랙트가 다른 개발자들의 사용을 위한 경우 프라그마 구문이 뜰 수 있습니다. 그렇지 않으면 개발자는 로컬에서 컴파일을 하기 위해서 프라그마를 수동으로 업데이트해야 할 것입니다.
 
-## Differentiate functions and events
+## 함수와 이벤트를 구별하세요.
 
-Favor capitalization and a prefix in front of events (we suggest *Log*), to prevent the risk of confusion between functions and events. For functions, always start with a lowercase letter, except for the constructor.
+함수와 이벤트 사이에 발생할 수 있는 혼란을 막기 위해, 이벤트의 이름을 대문자로 시작하는 것과 접두사 (우리는 Log를 추천합니다)를 사용하는 것을 장려합니다. 함수의 이름은 생성자(constructor)를 제외하고는 항상 소문자로 시작해야 합니다.
 
 ```sol
 // bad

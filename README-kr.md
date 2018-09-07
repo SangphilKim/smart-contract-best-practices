@@ -369,9 +369,9 @@ function internalAction() internal {
 }
 ```
 
-## Lock pragmas to specific compiler version
+## 프라그마(pragma)를 특정한 컴파일러 버전으로 고정하세요.
 
-Contracts should be deployed with the same compiler version and flags that they have been tested the most with. Locking the pragma helps ensure that contracts do not accidentally get deployed using, for example, the latest compiler which may have higher risks of undiscovered bugs. Contracts may also be deployed by others and the pragma indicates the compiler version intended by the original authors.
+컨트랙트는 테스트에서 가장 많이 사용되었던 컴파일러 버전 그리고 플래그와 같은 버전으로 배포되어야만 합니다. 프라그마를 고정하는 것은 컨트랙트가 의도치 않게 배포되는 것을 막아줍니다. 예를 들어, 최신 컴파일러는 발견되지 않은 버그들로 인한 더 많은 위험을 가지고 있습니다. 또한 컨트랙트는 다른 사람에 의해 배포되어야 하며 프라그라는 원래 저자가 의도한 컴파일러 버전을 나타냅니다.
 
 ```sol
 // bad

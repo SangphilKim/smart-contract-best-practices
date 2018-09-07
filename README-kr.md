@@ -400,9 +400,9 @@ event LogTransfer() {}
 function transfer() external {}
 ```
 
-## Prefer newer Solidity constructs
+## 새로운 솔리디티 구성을 선호합니다.
 
-Prefer constructs/aliases such as `selfdestruct` (over `suicide`) and `keccak256` (over `sha3`).  Patterns like `require(msg.sender.send(1 ether))` can also be simplified to using `transfer()`, as in `msg.sender.transfer(1 ether)`.
+`selfdestruct` (`suicide` 대신) 그리고 `keccak256` (`sha3` 대신)과 같은 구성/별명 (alias)을 선호합니다. 또한 `require(msg.sender.send(1 ether))` 같은 양식들은 `msg.sender.transfer(1 eter)`와 같이 `transfer()`를 사용해서 단순하게 만들 수 있습니다.
 
 ## Be aware that 'Built-ins' can be shadowed
 

@@ -382,9 +382,9 @@ pragma solidity ^0.4.4;
 pragma solidity 0.4.4;
 ```
 
-### Exception
+### 예외
 
-Pragma statements can be allowed to float when a contract is intended for consumption by other developers, as in the case with contracts in a library or EthPM package. Otherwise, the developer would need to manually update the pragma in order to compile locally.
+라이브러리나 EthPM 패키지 내의 컨트랙트의 경우와 같이, 컨트랙트가 다른 개발자들의 사용을 위한 경우 프라그마 구문이 뜰 수 있습니다. 그렇지 않으면 개발자는 로컬에서 컴파일을 하기 위해서 프라그마를 수동으로 업데이트해야 할 것입니다.
 
 ## Differentiate functions and events
 

@@ -345,27 +345,27 @@ function() payable { require(msg.data.length == 0); LogDepositReceived(msg.sende
 
 ## 함수와 상태 변수들의 가시성을 분명하게 표시하세요.
 
-Explicitly label the visibility of functions and state variables. Functions can be specified as being `external`, `public`, `internal` or `private`. Please understand the differences between them, for example, `external` may be sufficient instead of `public`. For state variables, `external` is not possible. Labeling the visibility explicitly will make it easier to catch incorrect assumptions about who can call the function or access the variable.
+함수와 상태 변수들의 가시성을 분명하게 표시해야 합니다. 함수들은 `external`, `public`, `internal` 또는 `private`으로 명시될 수 있습니다. 이 가시성들 사이의 차이점을 이해해주세요. 예를 들어, `public`이 아닌 `external`로 충분할 수도 있습니다. 상태 변수에는 `external`의 사용이 불가능합니다. 가시성을 분명하게 표시하는 것은 누가 함수를 호출했는지 또는 변수에 접근할 수 있는지에 대한 틀린 가정들을 찾아내는 것을 쉽게 만듭니다.
 
 ```sol
 // bad
-uint x; // the default is internal for state variables, but it should be made explicit
-function buy() { // the default is public
-    // public code
+uint x; // 상태 변수는 internal이 기본값입니다, 그러나 분명히 표시해야만 합니다.
+function buy() { // 기본값은 public입니다.
+    // public 코드
 }
 
 // good
 uint private y;
 function buy() external {
-    // only callable externally
+    // 오직 외부에서만 호출 가능함
 }
 
 function utility() public {
-    // callable externally, as well as internally: changing this code requires thinking about both cases.
+    // 외부뿐만 아니라 내부에서도 호출이 가능함: 이 코드를 수정하기 위해서는 두가지 경우에 대해 모두 고려해야 합니다.
 }
 
 function internalAction() internal {
-    // internal code
+    // 내부 코드
 }
 ```
 

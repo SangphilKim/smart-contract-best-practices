@@ -466,43 +466,43 @@ contract AttackingContract {
 
 더 자세한 내용은 이곳에서 확인하세요: [Solidity docs](https://solidity.readthedocs.io/en/develop/security-considerations.html#tx-origin)
 
-인가에 대한 문제 외에도, `tx.origin`이 미래에 이러리움 프로토콜에서 사라질 가능성이 있습니다. 그러므로 `tx.origin`을 사용하는 코드는 미래의 출시버전과는 호환되지 않을 것입니다 ([비탈릭: 'tx.origin이 계속해서 사용가능하거나 의미가 있을거라 가정하지 마십시오.'](https://ethereum.stackexchange.com/questions/196/how-do-i-make-my-dapp-serenity-proof/200#200)).
+인가에 대한 문제 외에도, `tx.origin`이 미래에 이더리움 프로토콜에서 사라질 가능성이 있습니다. 그러므로 `tx.origin`을 사용하는 코드는 미래의 출시버전과는 호환되지 않을 것입니다 ([비탈릭: 'tx.origin이 계속해서 사용가능하거나 의미가 있을거라 가정하지 마십시오.'](https://ethereum.stackexchange.com/questions/196/how-do-i-make-my-dapp-serenity-proof/200#200)).
 
 또한 `tx.origin`을 사용하게 되면 당신은 컨트랙트들 간의 상호운용성을 제한할 수 있습니다. 왜냐하면 tx.origin을 사용하는 컨트랙트는 컨트랙트가 `tx.origin`이 될 수 없기 때문에 다른 컨트랙트에 의해 사용될 수 없습니다.
 
-## Timestamp Dependence
+## 타임스탬프 의존성 (Timestamp Dependence)
 
-There are three main considerations when using a timestamp to execute a critical function in a contract, especially when actions involve fund transfer.
+컨트랙트의 중요한 함수를 실행하기 위해, 특히 송금을 포함하는 동작일 경우, 타임스탬프를 사용할 때 3가지 중요한 고려사항이 있습니다. 
 
 ### Gameability
 
-Be aware that the timestamp of the block can be manipulated by a miner. Consider this [contract](https://etherscan.io/address/0xcac337492149bdb66b088bf5914bedfbf78ccc18#code):
+블록의 타임스탬프는 채굴자에 의해 조작될 수 있음을 인지해야 합니다. 이 [컨트랙트](https://etherscan.io/address/0xcac337492149bdb66b088bf5914bedfbf78ccc18#code)에 대해 생각해보세요:
 
 ```sol
 
 uint256 constant private salt =  block.timestamp;
 
 function random(uint Max) constant private returns (uint256 result){
-    //get the best seed for randomness
+    //무작위성을 위해 최고의 시드를 받음
     uint256 x = salt * 100/Max;
     uint256 y = salt * block.number/(salt % 5) ;
     uint256 seed = block.number/3 + (salt % 300) + Last_Payout + y;
     uint256 h = uint256(block.blockhash(seed));
 
-    return uint256((h / x)) % Max + 1; //random number between 1 and Max
+    return uint256((h / x)) % Max + 1; //1과 최대값 사이의 무작위 숫자
 }
 ```
 
-When the contract uses the timestamp to seed a random number, the miner can actually post a timestamp within 30 seconds of the block being validating, effectively allowing the miner to precompute an option more favorable to their chances in the lottery. Timestamps are not random and should not be used in that context.
+컨트랙트가 무작위 숫자 시드를 위해 타임스탬프를 사용할 때, 채굴자는 실제로 블록의 유효성을 검사하는 시점으로부터 30초 이내에 타임스탬프를 게시할 수 있으므로, 사실상 채굴자들은 복권에서 그들의 기회를 더 유리하게 할 수 있도록 설정값을 미리 연산할 수 있습니다. 타임스탬프는 무작위가 아니며 해당 컨텍스트에서 사용해서는 안됩니다.
 
-### *30-second Rule*
-A general rule of thumb in evaluating timestamp usage is:
-#### If the contract function can tolerate a [30-second](https://ethereum.stackexchange.com/questions/5924/how-do-ethereum-mining-nodes-maintain-a-time-consistent-with-the-network/5931#5931) drift in time, it is safe to use `block.timestamp`
-If the scale of your time-dependent event can vary by 30-seconds and maintain integrity, it is safe to use a timestamp. This includes things like ending of auctions, registration periods, etc.
+### *30초 법칙(30-second Rule)*
+타임스탬프의 사용을 평가하는데 사용되는 일반적인 경험 법칙:
+#### 만약 컨트랙트 함수가 [30초](https://ethereum.stackexchange.com/questions/5924/how-do-ethereum-mining-nodes-maintain-a-time-consistent-with-the-network/5931#5931)가 지연되는 것을 허용할 수 있다면 `block.timestamp`를 사용해도 안전합니다.
+만약 당신의 시간 종속적인 이벤트의 규모가 30초간 다를 수 있고 무결성을 유지한다면, 타임스탬프를 사용해도 안전합니다. 경매 종료, 등록 기간 등이 포함됩니다.
 
-### Caution using `block.number` as a timestamp
+### `block.number`를 타임스탬프로 사용하지 마세요.
 
-When a contract creates an `auction_complete` modifier to signify the end of a token sale such as [so]((https://github.com/SpankChain/old-sc_auction/blob/master/contracts/Auction.sol))
+컨트랙트가 [이것과]((https://github.com/SpankChain/old-sc_auction/blob/master/contracts/Auction.sol)) 같이 토큰 판매 종료를 나타내기 위해 `auction_complete` 수정자를 만들 때
 ```sol
 modifier auction_complete {
     require(auctionEndBlock <= block.number     ||
@@ -510,11 +510,11 @@ modifier auction_complete {
           currentAuctionState == AuctionState.cancel)
         _;}
 ```
-`block.number` and *[average block time](https://etherscan.io/chart/blocktime)* can be used to estimate time as well, but this is not future proof as block times may change (such as [fork reorganisations](https://blog.ethereum.org/2015/08/08/chain-reorganisation-depth-expectations/) and the [difficulty bomb](https://github.com/ethereum/EIPs/issues/649)). In a sale spanning days, the 12-minute rule allows one to construct a more reliable estimate of time.
+`block.number`와 *[average block time](https://etherscan.io/chart/blocktime)*은 시간을 계산하는데 사용될 수 있습니다. 그러나 이것은 블록 타임이 바뀔수 있기 때문에 미래를 보장할 수 없습니다 ([fork reorganisations](https://blog.ethereum.org/2015/08/08/chain-reorganisation-depth-expectations/) 및 [difficulty bomb](https://github.com/ethereum/EIPs/issues/649)과 같은 경우). 판매 기간 동안, 12분 법칙은 신뢰할 수 있는 시간의 추정치를 만들 수 있게 합니다.
 
-## Multiple Inheritance Caution
+## 다중 상속 주의 (Multiple Inheritance Caution)
 
-When utilizing multiple inheritance in Solidity, it is important to understand how the compiler composes the inheritance graph.
+솔리디티에서 다중 상속을 활용할 때, 컴파일러가 상속 그래프를 어떻게 구성하는지를 이해하는 것은 중요합니다.
 
 ```sol
 
@@ -551,15 +551,15 @@ contract A is B, C {
   }
 }
 ```
-When A is deployed, the compiler will *linearize* the inheritance from left to right, as:
+A가 배포되었을 때, 컴파일러는 다음과 같이 상속을 왼쪽에서 오른쪽으로 선형화할 것입니다:
 
 **C -> B -> A**
 
-The consequence of the linearization will yield a `fee` value of 5, since C is the most derived contract. This may seem obvious, but imagine scenarios where C is able to shadow crucial functions, reorder boolean clauses, and cause the developer to write exploitable contracts. Static analysis currently does not raise issue with overshadowed functions, so it must be manually inspected.
+선형화의 결과는 C가 가장 깊게 파생되었기 때문에 fee 값으로 5를 넘겨줍니다. 이 사례는 명백해 보이지만, C가 주요한 기능을 숨기고, 부울 절을 다시 정렬하고, 개발자가 부당하게 이용될 수 있는 컨트랙트를 작성하게 만드는 경우를 상상해보세요. 현재 정적 분석은 숨겨져 있는 함수들에 대한 문제점을 발견하지 못합니다. 때문에 반드시 직접 검사해야만 합니다.
 
-For more on security and inheritance, check out this [article](https://pdaian.com/blog/solidity-anti-patterns-fun-with-inheritance-dag-abuse/)
+보안과 상속에 대해 더 알고 싶다면, 이 [기사](https://pdaian.com/blog/solidity-anti-patterns-fun-with-inheritance-dag-abuse/)를 확인하세요.
 
-To help contribute, Solidity's Github has a [project](https://github.com/ethereum/solidity/projects/9#card-8027020) with all inheritance-related issues.
+기여를 돕기 위해, 솔리디티 깃허브는 모든 상속 관련 문제들을 다루는 [프로젝트](https://github.com/ethereum/solidity/projects/9#card-8027020)를 가지고 있습니다.
 
 ## Deprecated/historical recommendations
 

@@ -561,13 +561,13 @@ A가 배포되었을 때, 컴파일러는 다음과 같이 상속을 왼쪽에�
 
 기여를 돕기 위해, 솔리디티 깃허브는 모든 상속 관련 문제들을 다루는 [프로젝트](https://github.com/ethereum/solidity/projects/9#card-8027020)를 가지고 있습니다.
 
-## Deprecated/historical recommendations
+## 지금은 불가능한, 역사적으로 있었던 권장사항들 (Deprecated/historical recommendations)
 
 These are recommendations which are no longer relevant due to changes in the protocol or improvements to solidity. They are recorded here for posterity and awareness.
 
-### Beware division by zero (Solidity < 0.4)
+### 0으로 나누기를 조심하세요 (솔리디티 < 0.4)
 
-Prior to version 0.4, Solidity [returns zero](https://github.com/ethereum/solidity/issues/670) and does not `throw` an exception when a number is divided by zero. Ensure you're running at least version 0.4.
+0.4 버전 이전의 솔리디티는 0으로 나누기를 했을 때 [0을 반환](https://github.com/ethereum/solidity/issues/670) 하고 예외를 `throw`하지 않았습니다. 솔리디티 버젼이 최소 0.4 버전인지 확인하세요.
 
 
 ## 알려진 공격들(Known Attacks)

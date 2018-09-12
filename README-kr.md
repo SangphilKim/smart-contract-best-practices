@@ -58,7 +58,7 @@
 
 ## 최신 버전으로 유지
 
-자원 리스트의 다음 부분으로 새로운 보안 개발 관심 유지를 한다.
+자원 리스트의 다음 부분으로 새로운 보안 개발 관심 유지를 합니다.
 
   - 발견된 새로운 버그에 대한 컨트렉트 확인
   - 가능한 툴이나 라이브러리를 최신버전으로 업그레이드
@@ -196,7 +196,7 @@ contract auction {
         require(msg.value >= highestBid);
 
         if (highestBidder != 0) {
-            highestBidder.transfer(highestBid); // 만약 이 호출이 지속적으로 실패하면, 아무도 입찰 할 수 없습니다
+            highestBidder.transfer(highestBid); // 만약 이 호출이 지속적으로 실패하면, 아무도 입찰 할 수 없음
         }
 
        highestBidder = msg.sender;
@@ -239,7 +239,7 @@ contract auction {
 
 예시:
 
-* rock paper scissors에서, 양쪽의 플레이어는 그들이 의도한 첫번째 움직임 해시를 제출 해야하고, 두 플레이어 모두 이동을 요구해야 합니다; 만약 제출된 움직임과 일치하지 않는다면 해시는 버리게 됩니다.
+* 가위-바위-보 게임에서, 양쪽의 플레이어는 그들이 의도한 첫번째 움직임 해시를 제출 해야하고, 두 플레이어 모두 이동을 요구해야 합니다; 만약 제출된 움직임과 일치하지 않는다면 해시는 버리게 됩니다.
 * 경매에서, 플레이어들은 초기단계 (입찰가 보다 큰 예치금과 함께) 에서 그들이 제시한 값의 해시를 제출해야 하며, 두번째 단계에서 그들이 제시한 입찰가를 제출하게 된다.
 * 난수 생성기 (random number generator) 를 필요로 하는 어플리케이션 개발을 할때, 순서는 항상 (1) 플레이어가 움직임을 제출하고, (2) 난수가 생성되고, (3) 플레이어가 지불(paid out)하는 방식이어야 한다. 난수 생성 방법은 그 자체가 활발한 연구 분야 입니다; 현재 최고의 방법 (best-in-class solutions) 으로 http://btcrelay.org 를 통해 인증된 비트코인 블록 헤더를 포함하는 법, 해시-커밋-리빌 스킴 (hash-commit-reveal schemes, 예. 한 파티가 숫자를 생성하고, 해시를 게시하여 값을 "커밋"한 다음, 나중에 값을 나타냅니다.) 그리고  [RANDAO](http://github.com/randao/randao) 입니다.
 * 만약 당신이 빈번한 일괄 경매 (frequent batch auction) 절차를 구현하는 경우, 해시-커밋 스킴 (hash-commit scheme) 이 바람직 합니다.
@@ -248,7 +248,7 @@ contract auction {
 
 자금을 빼낼 다른 방법이 없는 특정 행동을 수행하는 특정 집단에 의존하는 환불이나 요청 절차들을 만들지 마세요. 예를 들어, 가위바위보 게임의 흔한 실수는 두 플레이어가 그들의 행동을 제출하지 전까지 지불을 하지 않는 것입니다; 그러나, 악의적인 플레이어는 단순히 행동을 제출하지 않음으로써 상대방이 "상심하게" 만들 수 있습니다 - 사실, 플레이어가 상대방의 노출된 행동을 보고 그들이 지도록 결정한다면, 상대방은 그들의 행동을 제출할 이유가 전혀 없습니다. 이 문제는 상태 채널 합의 컨텍스트(context)에서 다시 발생하게 됩니다. 이런 상황들이 문제인 경우, (1) 초대받지 않은 참여자들을 피할 수 있는 방법(아마, 시간 제한을 통해)을 제공하고, (2) 모든 경우에 있어서 의도한대로 정보를 제출하는 참여자들을 위해 경제적 장려금을 추가하는 것을 고려해야 합니다.
 
-## Solidity 관련 권장 사항
+## 솔리디티 관련 권장 사항
 
 다음 권장 사항은 솔리디티에 특정한 내용이지만, 다른 언어들로 스마트 컨트랙트를 개발하는 것에도 도움이 될 수 있습니다.
 
@@ -360,7 +360,7 @@ function buy() external {
 }
 
 function utility() public {
-    // 외부뿐만 아니라 내부에서도 호출이 가능함: 이 코드를 수정하기 위해서는 두가지 경우에 대해 모두 고려해야 합니다.
+    // 외부뿐만 아니라 내부에서도 호출이 가능함: 이 코드를 수정하기 위해서는 두가지 경우에 대해 모두 고려해야 함
 }
 
 function internalAction() internal {
@@ -423,8 +423,7 @@ contract ExampleContract is PretendingToRevert {
 
 ## `tx.origin`를 사용하지 마세요.
 
-`tx.origin`을 인가(authorization)에 절대로 사용하지 마세요. 다른 컨트랙트는 당신의 컨트랙트를 호출할 수 있는 메서드를 가지고 있을 수 있고 당신의 컨트랙트는 그 트랜잭션을 `tx.origin`의 당신의 주소로 인가할 것입니다.
-Never use `tx.origin` for authorization, another contract can have a method which will call your contract (where the user has some funds for instance) and your contract will authorize that transaction as your address is in `tx.origin`.
+`tx.origin`을 인가(authorization)에 절대로 사용하지 마세요. 다른 컨트랙트는 (사용자가 인스턴스를 위해 자금을 가질수 있는) 컨트랙트를 호출할 수 있는 메서드를 가지고 있을 수 있고 당신의 컨트랙트는 그 트랜잭션을 `tx.origin`의 당신의 주소로 인가할 것입니다.
 
 ```
 pragma solidity 0.4.18;
@@ -590,7 +589,7 @@ mapping (address => uint) private userBalances;
 
 function withdrawBalance() public {
     uint amountToWithdraw = userBalances[msg.sender];
-    require(msg.sender.call.value(amountToWithdraw)()); // 이 부분에서 호출자의 코드가 실행되며, withdrawBalance를 다시 호출할 수 있습니다
+    require(msg.sender.call.value(amountToWithdraw)()); // 이 부분에서 호출자의 코드가 실행되며, withdrawBalance를 다시 호출할 수 있음
     userBalances[msg.sender] = 0;
 }
 ```
@@ -607,7 +606,7 @@ mapping (address => uint) private userBalances;
 function withdrawBalance() public {
     uint amountToWithdraw = userBalances[msg.sender];
     userBalances[msg.sender] = 0;
-    require(msg.sender.call.value(amountToWithdraw)()); // 사용자의 잔액은 이미 0이기 때문에 이후의 호출들은 아무것도 인출하지 못합니다.
+    require(msg.sender.call.value(amountToWithdraw)()); // 사용자의 잔액은 이미 0이기 때문에 이후의 호출들은 아무것도 인출하지 못함
 }
 ```
 
@@ -630,7 +629,7 @@ function transfer(address to, uint amount) {
 
 function withdrawBalance() public {
     uint amountToWithdraw = userBalances[msg.sender];
-    require(msg.sender.call.value(amountToWithdraw)()); // 이 부분에서 호출자의 코드가 실행되며, transfer()를 호출할 수 있습니다.
+    require(msg.sender.call.value(amountToWithdraw)()); // 이 부분에서 호출자의 코드가 실행되며, transfer()를 호출할 수 있음
     userBalances[msg.sender] = 0;
 }
 ```
@@ -658,10 +657,10 @@ function withdraw(address recipient) public {
 }
 
 function getFirstWithdrawalBonus(address recipient) public {
-    require(!claimedBonus[recipient]); // 받는 사람들은 각자 보너스를 한번만 요구할 수 있습니다.
+    require(!claimedBonus[recipient]); // 받는 사람들은 각자 보너스를 한번만 요구할 수 있음
 
     rewardsForA[recipient] += 100;
-    withdraw(recipient); // 이 부분에서 호출자는 getFirstWithdrawalBonus를 다시 실행할 수 있습니다.
+    withdraw(recipient); // 이 부분에서 호출자는 getFirstWithdrawalBonus를 다시 실행할 수 있음
     claimedBonus[recipient] = true;
 }
 ```
@@ -680,11 +679,11 @@ function untrustedWithdraw(address recipient) public {
 }
 
 function untrustedGetFirstWithdrawalBonus(address recipient) public {
-    require(!claimedBonus[recipient]); // 받는 사람들은 각자 보너스를 한번만 요구할 수 있습니다.
+    require(!claimedBonus[recipient]); // 받는 사람들은 각자 보너스를 한번만 요구할 수 있음
 
     claimedBonus[recipient] = true;
     rewardsForA[recipient] += 100;
-    untrustedWithdraw(recipient); // claimedBonus를 true로 설정합니다. 그래서 재진입(reentry)이 불가능합니다.
+    untrustedWithdraw(recipient); // claimedBonus를 true로 설정합니다. 그래서 재진입(reentry)이 불가능함
 }
 ```
 
@@ -709,7 +708,7 @@ function withdraw(uint amount) payable public returns (bool) {
     require(!lockBalances && amount > 0 && balances[msg.sender] >= amount);
     lockBalances = true;
 
-    if (msg.sender.call(amount)()) { // 일반적으로는 안전하지 않지만, 뮤텍스가 이것을 안전하게 합니다.
+    if (msg.sender.call(amount)()) { // 일반적으로는 안전하지 않지만, 뮤텍스가 이것을 안전하게 함
       balances[msg.sender] -= amount;
     }
 
@@ -771,19 +770,19 @@ mapping (address => uint256) public balanceOf;
 
 // 안전하지 않음
 function transfer(address _to, uint256 _value) {
-    /* 보내는 사람이 충분한 잔액을 가지고 있는지를 확인합니다. */
+    /* 보내는 사람이 충분한 잔액을 가지고 있는지를 확인함 */
     require(balanceOf[msg.sender] >= _value);
-    /* 새로운 잔액을 더하고 뺍니다. */
+    /* 새로운 잔액을 더하고 뺌 */
     balanceOf[msg.sender] -= _value;
     balanceOf[_to] += _value;
 }
 
 // 안전함
 function transfer(address _to, uint256 _value) {
-    /* 보내는 사람의 잔액이 충분한지와 오버플로우를 확인합니다. */
+    /* 보내는 사람의 잔액이 충분한지와 오버플로우를 확인함 */
     require(balanceOf[msg.sender] >= _value && balanceOf[_to] + _value >= balanceOf[_to]);
 
-    /* 새로운 잔액을 더하고 뺍니다. */
+    /* 새로운 잔액을 더하고 뺌 */
     balanceOf[msg.sender] -= _value;
     balanceOf[_to] += _value;
 }
@@ -815,13 +814,13 @@ contract UnderflowManipulation {
     }
 
     function popBonusCode()  {
-        require(bonusCodes.length >=0);  // 항상 진실인 명제(Tautology)입니다.
-        bonusCodes.length--; // 이 부분에서 언더플로우가 발생할 수 있습니다.
+        require(bonusCodes.length >=0);  // 항상 진실인 명제(Tautology)
+        bonusCodes.length--; // 이 부분에서 언더플로우가 발생할 수 있음
     }
 
     function modifyBonusCode(uint index, uint update)  {
         require(index < bonusCodes.length);
-        bonusCodes[index] = update; // bonusCodes.length보다 작은 인덱스에 입력합니다.
+        bonusCodes[index] = update; // bonusCodes.length보다 작은 인덱스에 입력함
     }
 
 }
@@ -852,7 +851,7 @@ contract Auction {
     function bid() payable {
         require(msg.value > highestBid);
 
-        require(currentLeader.send(highestBid)); // 이전의 리더에게 환불을 해줍니다. 그리고 만약 환불에 실패하면 회귀됩니다.
+        require(currentLeader.send(highestBid)); // 이전의 리더에게 환불을 해줌 그리고 만약 환불에 실패하면 회귀됨
 
         currentLeader = msg.sender;
         highestBid = msg.value;
@@ -871,7 +870,7 @@ mapping (address => uint) public refunds;
 // 좋지 않은 코드
 function refundAll() public {
     for(uint x; x < refundAddresses.length; x++) { // 얼마나 많은 주소들이 참가했는지에 기반한 임의의 길이만큼 반복
-        require(refundAddresses[x].send(refunds[refundAddresses[x]])) // 두 배로 나쁨, 지금 send에서 발생한 단 하나의 실패는 모든 자금을 지연시키킵니다.
+        require(refundAddresses[x].send(refunds[refundAddresses[x]])) // 두 배로 나쁨, 지금 send에서 발생한 단 하나의 실패는 모든 자금을 지연시킴
     }
 }
 ```
@@ -954,8 +953,8 @@ contract Vulnerable {
 
 ### 고장난 컨트랙트 업그레이드(Upgrading Broken Contracts)
 
-!!! warning
-     This section is outdated. There are many important questions, and risks related to smart contract upgradeability. Do your research into the state of the art. We welcome discussion on the [related issue](https://github.com/ConsenSys/smart-contract-best-practices/issues/164).
+!!! 주의
+     이 부분은 만기 되었습니다. 여기엔 중요한 질문들이 많이 있고, 스마트 컨트렉트 업그레이드와 관련된 리스크들이 있습니다. 최신 기술(the state of the art)에 대해 연구를 하세요. [관련 이슈](https://github.com/ConsenSys/smart-contract-best-practices/issues/164)의 토론을 환영합니다.
 
 코드는 오류가 발견되었거나 개선이 필요할 때 변경이 필요하게 됩니다. 버그를 찾는 것은 좋지는 않지만, 버그를 다룰 수 있는 방법도 없습니다.
 
@@ -1056,7 +1055,7 @@ modifier isAdmin() {
 }
 
 function toggleContractActive() isAdmin public {
-    // 당신은 사용자들의 투표와 같이 다른 동작에 기반하여 컨트랙트를 멈추는 것을 제한하는 수정자를 추가할 수 있습니다.
+    // 당신은 사용자들의 투표와 같이 다른 동작에 기반하여 컨트랙트를 멈추는 것을 제한하는 수정자를 추가할 수 있음
     stopped = !stopped;
 }
 
@@ -1091,8 +1090,8 @@ uint constant withdrawalWaitPeriod = 28 days; // 4주
 function requestWithdrawal() public {
     if (balances[msg.sender] > 0) {
         uint amountToWithdraw = balances[msg.sender];
-        balances[msg.sender] = 0; // 간결함을 위해, 우리는 모든 것을 인출할 것입니다;
-        // 아마 예금 함수는 인출이 진행중이라면 새로운 예금을 막습니다.
+        balances[msg.sender] = 0; // 간결함을 위해, 우리는 모든 것을 인출할 것임;
+        // 아마 예금 함수는 인출이 진행중이라면 새로운 예금을 막음
 
         requestedWithdrawals[msg.sender] = RequestedWithdrawal({
             amount: amountToWithdraw,
@@ -1285,33 +1284,33 @@ EIP-20 토큰의 `approve()` 함수는 인가된 소비자가 의도한 양보�
 
 ### 정적 분석(Static Analysis)
 
-- [Manticore](https://github.com/trailofbits/manticore) - [EVM을 지원](https://asciinema.org/a/haJU2cl0R0Q3jB9wd733LVosL)하는 동적 이진 분석 도구
-- [Mythril](https://github.com/ConsenSys/mythril) - 이더리움 블록체인을 위한 리버스 엔지니어링 및 버그 헌팅 프레임워크
-- [Oyente](https://github.com/melonproject/oyente) - [이 문서](http://www.comp.nus.edu.sg/~loiluu/papers/oyente.pdf)에 기반하여 일반적인 취약점들을 찾기 위해 이더리움 코드를 분석
+- [Manticore](https://github.com/trailofbits/manticore) - [EVM을 지원](https://asciinema.org/a/haJU2cl0R0Q3jB9wd733LVosL)하는 동적 이진 분석 도구 입니다.
+- [Mythril](https://github.com/ConsenSys/mythril) - 이더리움 블록체인을 위한 리버스 엔지니어링 및 버그 헌팅 프레임워크 입니다.
+- [Oyente](https://github.com/melonproject/oyente) - [이 문서](http://www.comp.nus.edu.sg/~loiluu/papers/oyente.pdf)에 기반하여 일반적인 취약점들을 찾기 위해 이더리움 코드를 분석 입니다.
 - [Solgraph](https://github.com/raineorshine/solgraph) - 솔리디티 컨트랙트의 함수 제어 흐름을 시각화한 DOT 그래프를 생성하고 잠재적인 보안 취약점들을 강조합니다.
-- [SmartCheck](https://tool.smartdec.net) - 보안 취약점 및 모범 사례를 위한 솔리디티 소스 코드의 정적 분석
+- [SmartCheck](https://tool.smartdec.net) - 보안 취약점 및 모범 사례를 위한 솔리디티 소스 코드의 정적 분석 입니다.
 
 ### 검사 방법(Test Coverage)
 
-- [solidity-coverage](https://github.com/sc-forks/solidity-coverage) - 솔리디티 테스트를 위한 코드 검사
+- [solidity-coverage](https://github.com/sc-forks/solidity-coverage) - 솔리디티 테스트를 위한 코드 검사 입니다.
 
 ### 린터(Linters)
 
 린터는 스타일과 구성을 위해 코드 작성 규칙을 강제함으로써 코드의 품질을 개선하여 코드가 읽고 검토하기 쉽게 만듭니다.
 
-- [Solcheck](https://github.com/federicobond/solcheck) - JS로 작성된 솔리디티 코드를 위한 린터로 eslint로부터 많은 영향을 받음.
-- [Solint](https://github.com/weifund/solint) - 당신의 솔리디티 스마트 컨트랙트들에서 당신이 일관된 규칙을 적용하고 오류를 피할 수 있도록 도와주는 솔리디티 린터
-- [Solium](https://github.com/duaraghav8/Solium) - 또 다른 솔리디티 린팅
-- [Solhint](https://github.com/protofire/solhint) - 보안과 작성 규칙 검증을 모두 제공하는 솔리디티를 위한 린터
+- [Solcheck](https://github.com/federicobond/solcheck) - JS로 작성된 솔리디티 코드를 위한 린터로 eslint로부터 많은 영향을 받습니다.
+- [Solint](https://github.com/weifund/solint) - 당신의 솔리디티 스마트 컨트랙트들에서 당신이 일관된 규칙을 적용하고 오류를 피할 수 있도록 도와주는 솔리디티 린터 입니다.
+- [Solium](https://github.com/duaraghav8/Solium) - 또 다른 솔리디티 린터 입니다.
+- [Solhint](https://github.com/protofire/solhint) - 보안과 작성 규칙 검증을 모두 제공하는 솔리디티를 위한 린터 입니다.
 
 <a name="security_notifications"></a>
 # 보안 알림
 
 이것은 이더리움과 솔리디티에서 발견된 보안 취약점을 강조하는 출처들의 목록입니다. 보안 알림(security notifications)의 공식 출처는 이더리움 블로그이지만, 대부분의 경우 취약점들은 다른 출처들에서 먼저 공개되고 이에 대해 논의될 것입니다.
 
-- [이더리움 블로그](https://blog.ethereum.org/): 공식 이더리움 블로그
-  - [이더리움 블로그 - 보안](https://blog.ethereum.org/category/security/): *Security* 태그가 붙은 모든 블로그 글들
-- [이더리움 깃터(Gitter)](https://gitter.im/orgs/ethereum/rooms) 대화방들
+- [이더리움 블로그](https://blog.ethereum.org/): 공식 이더리움 블로그 입니다.
+  - [이더리움 블로그 - 보안](https://blog.ethereum.org/category/security/): *Security* 태그가 붙은 모든 블로그 글들 입니다.
+- [이더리움 깃터(Gitter)](https://gitter.im/orgs/ethereum/rooms) 대화방들 입니다.
   - [솔리디티](https://gitter.im/ethereum/solidity)
   - [Go-Ethereum](https://gitter.im/ethereum/go-ethereum)
   - [CPP-Ethereum](https://gitter.im/ethereum/cpp-ethereum)

@@ -116,6 +116,7 @@
 
 믿을 수 없는 컨트렉트의 호출은 몇가지 기대하지 않은 위험이나 에러를 야기할 수 있습니다. 외부 호출은 다른 컨트렉트에 의존하는 컨트렉트 _또는_ 컨트렉트 내부의 악성 코드를 실행 시킬 수 있습니다. 보통 말하는 그런 모든 외부 호출은 잠재적인 보안 위험으로 처리해야 합니다. 그게 불가능해 지거나 외부 호출을 제거할 수 없다면, 이 섹션의 뒷부분에 있는 권장사항을 이용해 위험을 최소화 하세요.
 
+<a name="mark-untrusted-contracts"></a>
 ### 믿을 수 없는 컨트렉트 표시
 
 외부에 있는 컨트렉트들, 변수들, 메소드들, 컨트렉트 인터페이스들과 상호작용을 할 때 명확하게 하는 방법으로 그들과 상호작용은 잠재적으로 불안전 합니다. 이것은 당신이 소유한 함수의 외부 호출 컨드렉트를 적용한 것 입니다.
@@ -302,6 +303,7 @@ uint numerator = 5;
 uint denominator = 2;
 ```
 
+<a name="remember-that-ether-can-be-forcibly-sent-to-an-account"></a>
 ## 이더가 강제로 전송될 수 있다는 것을 기억하세요.
 
 컨트렉트 계좌를 철저하게 확인하는 변하지 않는(invariant) 코딩을 주의하세요.
@@ -467,6 +469,7 @@ contract AttackingContract {
 
 또한 `tx.origin`을 사용하게 되면 당신은 컨트랙트들 간의 상호운용성을 제한할 수 있습니다. 왜냐하면 tx.origin을 사용하는 컨트랙트는 컨트랙트가 `tx.origin`이 될 수 없기 때문에 다른 컨트랙트에 의해 사용될 수 없습니다.
 
+<a name="timestamp-dependence"></a>
 ## 타임스탬프 의존성 (Timestamp Dependence)
 
 컨트랙트의 중요한 함수를 실행하기 위해, 특히 송금을 포함하는 동작일 경우, 타임스탬프를 사용할 때 3가지 중요한 고려사항이 있습니다.
@@ -571,7 +574,8 @@ A가 배포되었을 때, 컴파일러는 다음과 같이 상속을 왼쪽에�
 
 다음은 당신이 스마트 컨트랙트를 작성할 때 인지하고 방지해야 하는 알려진 공격들의 목록입니다.
 
-## 경합조건(Race Conditions)<sup><a name="race-conditions"></a>
+<a name="race-conditions"></a>
+## 경합조건(Race Conditions)
 
 컨트랙트를 외부(external)에서 호출 시 발생하는 가장 큰 위험 중 하나는 그것이 통제 흐름을 뺏을 수 있다는 것이며, 호출한 함수가 예상하지 못한 당신의 데이터를 변경할 수 있다는 것입니다. 이러한 종류의 버그는 많은 형태를 가지고 있을 수 있으며, DAO의 붕괴를 만들어낸 두 개의 주요 버그들은 이런 종류의 버그였습니다.
 
@@ -684,7 +688,7 @@ function untrustedGetFirstWithdrawalBonus(address recipient) public {
 }
 ```
 
-재진입을 불가능하도록 수정하는 것 뿐만 아니라, [신뢰할 수 없는 함수들은 표시가 되었습니다](./recommendations#mark-untrusted-contracts). 이것과 같은 양식은 모든 수준에서 반복됩니다: `untrustedGetFirstWithdrawalBonus()` 함수가 외부 컨트랙트를 호출하는 `untrustedWithdraw()`를 호출하기 때문에, 당신은 또한 반드시 `untrustedGetFirstWithdrawalBonus()`를 안전하지 않은 것으로 대해야 합니다.
+재진입을 불가능하도록 수정하는 것 뿐만 아니라, [신뢰할 수 없는 함수들은 표시가 되었습니다](#mark-untrusted-contracts). 이것과 같은 양식은 모든 수준에서 반복됩니다: `untrustedGetFirstWithdrawalBonus()` 함수가 외부 컨트랙트를 호출하는 `untrustedWithdraw()`를 호출하기 때문에, 당신은 또한 반드시 `untrustedGetFirstWithdrawalBonus()`를 안전하지 않은 것으로 대해야 합니다.
 
 종종 추천되는 또 다른 해결책은 [뮤텍스(mutex)](https://en.wikipedia.org/wiki/Mutual_exclusion)입니다. 이것은 당신이 몇몇 상태를 "잠금"할 수 있도록 함으로써 "잠금"의 소유자에 의해서만 변경하는 것이 가능하게 합니다. 쉬운 예시는 다음과 같습니다.
 
@@ -745,6 +749,7 @@ contract StateHolder {
 
 <div style='font-size: 80%; display: inline;'>* 몇몇 사람들은 이더리움이 현재에는 진정한 병행성을 가지고 있지 않기 때문에 <i>경합 조건</i>이라는 단어의 사용에 반대할 수도 있습니다. 하지만 자원(resources)을 차지하기 위한 논리적으로 서로 다른 프로세스(processes)의 기본적인 특징들이 여전히 존재하며 같은 종류의 위험들과 잠재적인 해결책이 적용되어 있습니다.</div>
 
+<a name="transaction-ordering-dependence-tod-front-running"></a>
 ## 트랜잭션-순서 의존성(TOD : Transaction-Ordering Dependence) / 선행매매(Front Running)
 
 위의 예시들은 공격자가 악의적인 코드를 *단일 트랜잭션 내*에서 실행하는 것을 포함하고 있는 경합 조건들의 예시입니다. 다음은 블록체인에 내재되어 있는 다른 종류의 경합 조건입니다: 실제로 *트랜잭션들의 순서*(블록 내의)는 쉽게 조작될 수 있습니다.
@@ -755,7 +760,7 @@ contract StateHolder {
 
 블록의 타임스탬프는 채굴자에 의해 조작될 수 있음을 알고 있어야 합니다. 그리고 모든 직, 간접적인 타임스탬프의 사용은 고려해야 합니다.
 
-타임스탬프 의존성에 관련된 디자인 고려사항들을 위한 [권장 사항](./recommendations/#timestamp-dependence) 부분을 참조하세요.
+타임스탬프 의존성에 관련된 디자인 고려사항들을 위한 [권장 사항](#timestamp-dependence) 부분을 참조하세요.
 
 ## 정수 오버플로우와 언더플로우
 
@@ -855,7 +860,7 @@ contract Auction {
 }
 ```
 
-이전의 리더에게 환불해주려 할 때, 환불이 실패한다면 회귀하게 됩니다. 이것은 그들의 주소로 환불하려는 것을 *항상* 실패하게 함으로써 악의적인 가격 제시자가 리더가 될 수 있다는 것을 의미합니다. 이런 경우 그들은 `bid()` 함수를 호출하는 다른 사람들을 막을 수 있으며, 계속 리더로 남아있을 수 있습니다. 추천하는 방법은 이전에 설명했던 것처럼 [pull payment system](./recommendations#favor-pull-over-push-for-external-calls)을 설정하는 것입니다.
+이전의 리더에게 환불해주려 할 때, 환불이 실패한다면 회귀하게 됩니다. 이것은 그들의 주소로 환불하려는 것을 *항상* 실패하게 함으로써 악의적인 가격 제시자가 리더가 될 수 있다는 것을 의미합니다. 이런 경우 그들은 `bid()` 함수를 호출하는 다른 사람들을 막을 수 있으며, 계속 리더로 남아있을 수 있습니다. 추천하는 방법은 이전에 설명했던 것처럼 [pull payment system](#favor-pull-over-push-for-external-calls)을 설정하는 것입니다.
 
 또 다른 예시는 컨트랙트가 배열을 통해 사용자들에게 결제하는 것을 반복하는 것입니다(예를 들자면 크라우드펀딩 컨트랙트의 서포터들). 이것은 각각의 결제가 성공하는 것을 확실히 하는 것을 원한다면 일반적으로 사용되는 방법입니다. 만약 그렇지 않다면 그 하나는 회귀됩니다. 문제는 하나가 실패한다면 당신은 전체 지불 시스템을 회귀시켜야 한다는 것입니다. 이것은 반복이 절대 끝나지 않는다는 것을 의미합니다. 한 개의 주소가 에러를 만들어내기 때문에 그 누구도 지불을 받지 못합니다.
 
@@ -871,15 +876,16 @@ function refundAll() public {
 }
 ```
 
-다시 말하지만 추천하는 해결책으로는 [pull over push payments를 장려](./recommendations#favor-pull-over-push-for-external-calls)합니다.
+다시 말하지만 추천하는 해결책으로는 [pull over push payments를 장려](#favor-pull-over-push-for-external-calls)합니다.
 
+<a name="dos-with-block-gas-limit"></a>
 ## 블록 가스 한도가 있는 DoS(DoS with Block Gas Limit)
 
 아마 당신은 이전의 예제에서 또 다른 문제가 있다는 것을 눈치챘을 것입니다: 모두에게 한번에 지불한다면, 당신은 블록 가스 한도에 도달할 위험이 있습니다. 각각의 이더리움 블록은 특정 최대 계산량을 처리할 수 있습니다. 만약 당신이 그 이상을 시도한다면, 당신의 트랜잭션은 실패할 것입니다.
 
 이것은 의도적인 공격이 없어도 문제를 일으킬 수 있습니다. 그러나 공격자가 필요한 가스량을 조작할 수 있다면 특히 나쁩니다. 이전의 예제에서 공격자는 각각 소량의 환불만을 요구하는 많은 주소들을 추가할 수 있습니다. 그러므로 공격자의 각 주소들에 환불하는데 드는 가스 비용은 가스 한도 이상일 수 있으며 환불 트랜잭션이 전혀 발생하지 않습니다.
 
-이것은 [pull over push payments를 장려](./recommendations#favor-pull-over-push-for-external-calls)하는 또 다른 이유입니다.
+이것은 [pull over push payments를 장려](#favor-pull-over-push-for-external-calls)하는 또 다른 이유입니다.
 
 만약 당신이 반드시 꼭 알 수 없는 크기의 배열을 반복해야 한다면, 잠재적으로 여러 블록을 사용할 수 있도록 계획해야 합니다. 즉, 여러개의 트랜잭션이 필요합니다. 다음 예시와 같이 당신은 얼마나 진행했는지 추적할 수 있어야 하며, 그 지점으로부터 다시 시작할 수 있어야 합니다:
 
@@ -940,7 +946,7 @@ contract Vulnerable {
 <a name="software_engineering"></a>
 # 소프트웨어 공학 기법들(Software Engineering Techniques)
 
-[일반적인 철학](/general_philosophy/)에서 논했던 것처럼, 당신 스스로를 알려진 공격들로부터 방어하는 것만으로는 충분하지 않습니다. 블록체인 상에서의 실패 비용은 매우 높을 수 있기 때문에, 이러한 위험을 고려하여 소프트웨어를 작성하는 방법을 바꿔야 합니다.
+[일반적인 철학](#General_Philosophy)에서 논했던 것처럼, 당신 스스로를 알려진 공격들로부터 방어하는 것만으로는 충분하지 않습니다. 블록체인 상에서의 실패 비용은 매우 높을 수 있기 때문에, 이러한 위험을 고려하여 소프트웨어를 작성하는 방법을 바꿔야 합니다.
 
 우리가 선호하는 접근은 "실패에 대비하라"입니다. 당신의 코드가 안전한지 사전에 아는 것은 불가능 합니다. 그러나 당신은 컨트랙트가 실패하는 것을 최소한의 피해로 너그럽게 받아들일 수 있도록 설계할 수 있습니다. 이 부분은 당신이 실패에 대비하는 것에 도움을 줄 수 있는 다양한 기법들을 보여줍니다.
 
@@ -1033,6 +1039,7 @@ contract Relay {
 
 당신의 접근 방식에도 불구하고, 당신의 컨트랙트를 업그레이드하는 몇 가지 방법을 가지는 것은 중요합니다. 그렇지 않으면 컨트랙트들은 불가피한 버그들이 컨트랙트들에서 발견된다면 사용할 수 없게 될 것입니다.
 
+<a name="circuit-breakers-pause-contract-functionality"></a>
 ### 서킷 브레이커(Circuit Breakers, 함수의 기능을 정지시킴)
 
 서킷 브레이커는 특정 조건이 만족되면 실행을 중지시킵니다. 그리고 새로운 버그들이 발견되었을 때 유용합니다. 예를 들어, 대부분의 동작들이 컨트랙트 내에서 버그가 별견되었다면 중단될 것입니다. 그리고 가능한 유일한 동작은 인출 뿐입니다. 당신은 특정한 신뢰할 수 있는 단체에게 서킷 브레이커를 작동시킬 수 있는 능력을 주거나, 아니면 특정 조건이 만족되었을 때 자동으로 서킷 브레이커가 작동되게 하는 프로그램 규칙을 넣을 수 있습니다.
@@ -1145,6 +1152,7 @@ function withdraw() public {
 
 초기 단계에 당신은 사용자의 이더의 양을 제한할 수 있었습니다 (또는 전체 컨트랙트에 대해) - 위험을 감소시킵니다.
 
+<a name="bounties"></a>
 ### 버그 바운티 프로그램(Bug Bounty Programs)
 
 바운티 프로그램을 운영하기 위한 몇 가지 팁:
@@ -1186,7 +1194,7 @@ function withdraw() public {
 
 ## EIP-20에 대한 선행매매 공격을 알아야 합니다.
 
-EIP-20 토큰의 `approve()` 함수는 인가된 소비자가 의도한 양보다 더 많이 소비할 수 있는 가능성을 만듭니다. [선행매매 공격](./known_attacks/#transaction-ordering-dependence-tod-front-running)이 사용될 수 있으며, 이것은 `approve()` 호출이 처리되기 전후에 인가된 소비자가 `transferFrom()`을 호출할 수 있도록 합니다. 더 자세한 사항은 [EIP](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md#approve)와 [이 문서](https://docs.google.com/document/d/1YLPtQxZu1UAvO9cZ1O2RPXBbT0mooh4DYKjA_jp-RLM/edit)에서 확인할 수 있습니다.
+EIP-20 토큰의 `approve()` 함수는 인가된 소비자가 의도한 양보다 더 많이 소비할 수 있는 가능성을 만듭니다. [선행매매 공격](#transaction-ordering-dependence-tod-front-running)이 사용될 수 있으며, 이것은 `approve()` 호출이 처리되기 전후에 인가된 소비자가 `transferFrom()`을 호출할 수 있도록 합니다. 더 자세한 사항은 [EIP](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md#approve)와 [이 문서](https://docs.google.com/document/d/1YLPtQxZu1UAvO9cZ1O2RPXBbT0mooh4DYKjA_jp-RLM/edit)에서 확인할 수 있습니다.
 
 ## 0x0 주소로의 토큰 전송 방지
 

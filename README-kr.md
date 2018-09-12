@@ -947,6 +947,9 @@ contract Vulnerable {
 
 ### 고장난 컨트랙트 업그레이드(Upgrading Broken Contracts)
 
+!!! warning
+     This section is outdated. There are many important questions, and risks related to smart contract upgradeability. Do your research into the state of the art. We welcome discussion on the [related issue](https://github.com/ConsenSys/smart-contract-best-practices/issues/164).
+
 코드는 오류가 발견되었거나 개선이 필요할 때 변경이 필요하게 됩니다. 버그를 찾는 것은 좋지는 않지만, 버그를 다룰 수 있는 방법도 없습니다.
 
 스마트 컨트랙트를 위해 효율적인 업그레이드 시스템을 설계하는 것은 활발히 연구중인 부문이며 이 문서 내에의 모든 문제들을 해결할 수는 없습니다. 그러나 가장 일반적으로 사용되는 두 가지 기본적인 접근법이 있습니다. 두 가지 중 더 간단한 것은 가장 최신 버전의 컨트랙트 주소를 가지고 있는 등록 컨트랙트를 만드는 것입니다. 컨트랙트 사용자를 위한 좀 더 매끄러운 방법은 최신 버전의 컨트랙트에 호출과 데이터를 전달하는 컨트랙트를 만드는 것입니다.

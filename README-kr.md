@@ -8,21 +8,21 @@
 ## 어디서부터 시작하죠?
 
 * [일반적인 철학 (General Philosophy)](#General_Philosophy) 스마트 컨트렉트 보안 사고방식에 대해 설명합니다.
-* [솔리디티 권장사항(Solidity Recommendations)](./recommendations.md) 바람직한 코드 패턴의 예시를 담았습니다.
-* [알려진 공격(Known Attacks)](./known_attacks.md) 다른 클래스들 간의 취약성을 피하는 방법을 설명합니다.
-* [소프트웨어 엔지니어링(Software Engineering)](./software_engineering.md) 몇개의 아키텍쳐의 개요와 위험완화를 위한 디자인 접근법의 개요입니다.
-* [문서와 절차(Documentation and Procedures)](./documentation_procedures.md) 외부 개발자들과 감사원들(Auditors)을 위한 시스템 문서 작성법 연습 개요입니다.
-* [보안 도구(Security Tools)](./security_tools.md) 취약성 탐지와 코드 수준 발전을 위한 툴 리스트 입니다.
-* [보안 알림(Security Notifications)](./security_notifications.md) 최신 상태를 유지하기 위한 정보 소스 리스트 입니다.
-* [토큰(Tokens)](./tokens.md) 토큰과 관련된 연습 개요 입니다.
+* [솔리디티 권장사항(Solidity Recommendations)](#recommendations) 바람직한 코드 패턴의 예시를 담았습니다.
+* [알려진 공격(Known Attacks)](#known_attacks) 다른 클래스들 간의 취약성을 피하는 방법을 설명합니다.
+* [소프트웨어 엔지니어링(Software Engineering)](#software_engineering) 몇개의 아키텍쳐의 개요와 위험완화를 위한 디자인 접근법의 개요입니다.
+* [문서와 절차(Documentation and Procedures)](#documentation_procedures) 외부 개발자들과 감사원들(Auditors)을 위한 시스템 문서 작성법 연습 개요입니다.
+* [보안 도구(Security Tools)](#security_tools) 취약성 탐지와 코드 수준 발전을 위한 툴 리스트 입니다.
+* [보안 알림(Security Notifications)](#security_notifications) 최신 상태를 유지하기 위한 정보 소스 리스트 입니다.
+* [토큰(Tokens)](#tokens) 토큰과 관련된 연습 개요 입니다.
 
 ## 기여자(Contributions)를 환영합니다!
 
-작은 수정이나, 새로운 섹션 추가를 자유롭게 풀 리퀘스트(pull request)해주세요. 만약에 새로운 컨텐츠 내용을 작성하신다면, [contributing](./about/contributing.md)페이지 안에 스타일 안내 방식으로 언급해주세요.  
+작은 수정이나, 새로운 섹션 추가를 자유롭게 풀 리퀘스트(pull request)해주세요. 만약에 새로운 컨텐츠 내용을 작성하신다면, [contributing](./docs/about/contributing.md)페이지 안에 스타일 안내 방식으로 언급해주세요.  
 
 필요한 보완이나 업데이트 주제들은 [issues](https://github.com/ConsenSys/smart-contract-best-practices/issues)에서 볼 수 있습니다. 만약 당신의 아이디어에 대해 토론하기 원한다면, [Gitter](https://gitter.im/ConsenSys/smart-contract-best-practices)에서 우리와 채팅 할 수 있습니다.
 
-글이나 블로그 포스팅을 하신다면, [bibliography](./bibliography.md)에 추가 해 주세요.
+글이나 블로그 포스팅을 하신다면, [bibliography](#bibliography)에 추가 해 주세요.
 
 <a name="General_Philosophy"></a>
 # 일반적인 철학 (General Philosophy)
@@ -102,7 +102,7 @@
 
 복제는 당신이 가지고 있는 컨트렉트 중 전에 디플로이 되었던 컨트렉트를 사용할 수 없는 경우에 빈번하게 의존하게 됩니다. 복제 없이 재사용 가능한 안전한 코드 패턴을 찾아 제공하기 위해 [라이브 립스(Live Libs)](https://github.com/ConsenSys/live-libs)와 [제플린 솔리디티(Zeppelin Solidity)](https://github.com/OpenZeppelin/zeppelin-solidity)는 노력하고 있는 중 입니다. 모든 컨트렉트 보안 분석은 스마트 컨트렉트 시스템 목표의 자금 위험과 신뢰할만한 수준으로 사전에 인증(established)받지 못한 재사용 코드도 모두 포함 되어야 합니다.
 
-
+<a name="recommendations"></a>
 # 솔리디티 스마트 컨트렉트 보안 권장사항들
 이 페이지는 스마트 컨트렉트를 작성할때 일반적으로 따르는 솔리디티 패턴 몇가지를 보여줍니다.
 
@@ -141,7 +141,7 @@ function makeUntrustedWithdrawal(uint amount) {
 
 *로우 콜(raw calls)* [`someAddress.call()`과 같은 유형] 또는 *컨트렉트 콜(contract calls)* [`ExternalContract.someMethod()`과 같은 유형] 은 악성 코드가 실행 될 수 있습니다. `ExternalContract`가 악성 코드가 아니여도, *그것* 이 어떤 컨트렉트에 의해 호출되면 악성코드가 실행 될 수 있습니다.
 
-한가지 더 큰 위험은 악성코드가 통제 흐름을 뺏을 수 있으며, 경합조건(race conditions)으로 이어지게 됩니다 ([경합 조건(Race Conditions)](./known_attacks#race-conditions)에서 이 문제에 대해 논의하고 있습니다).
+한가지 더 큰 위험은 악성코드가 통제 흐름을 뺏을 수 있으며, 경합조건(race conditions)으로 이어지게 됩니다 ([경합 조건(Race Conditions)](#race-conditions)에서 이 문제에 대해 논의하고 있습니다).
 
 만약 당신이 신뢰할 수 없는 외부 컨트렉트를 호출한다면, *호출 이후에 상태를 바꾸는 것을 피하세요*. 이 패턴은 때때로 [확인-효과-작동 패턴 (checks-effects-interactions pattern)](http://solidity.readthedocs.io/en/develop/security-considerations.html?highlight=check%20effects#use-the-checks-effects-interactions-pattern) 이라고도 합니다.
 
@@ -149,7 +149,7 @@ function makeUntrustedWithdrawal(uint amount) {
 
 이더를 보낼때 `someAddress.send()`와 `someAddress.transfer()`, `someAddress.call.value()()` 사이에서 서로 상충되는 관계를 아셔야 합니다.
 
-- `someAddress.send()`와 `someAddress.transfer()`는 [재진입(reentrancy)](./known_attacks#reentrancy)에 대응하는 *안전함* 이 고려되어야 합니다. 이러한 메소드들이 코드를 실행시키는 순간, 호출 당한 컨트렉트는 사용료로 현재 이벤트 로그 용도으로 충분한 2,300 가스만 받습니다.
+- `someAddress.send()`와 `someAddress.transfer()`는 [재진입(reentrancy)](#reentrancy)에 대응하는 *안전함* 이 고려되어야 합니다. 이러한 메소드들이 코드를 실행시키는 순간, 호출 당한 컨트렉트는 사용료로 현재 이벤트 로그 용도으로 충분한 2,300 가스만 받습니다.
 - `x.transfer(y)`와 `require(x.send(y));`는 같지만, 후자는 전송이 실패하면 자동적으로 회귀(revert)됩니다.
 - `someAddress.call.value(y)()` 는 이더와 실행 코드를 전송하게 됩니다. 실행 코드는 재진입에 반하는 *불안전* 값을 전송하는 타입으로 실행을 위해 가능한 모든 가스가 주어집니다.
 
@@ -180,10 +180,10 @@ if(!someAddress.send(55)) {
 
 ExternalContract(someAddress).deposit.value(100);
 ```
-
+<a name="favor-pull-over-push-for-external-calls"></a>
 ### 외부 호출시 *pull* 보다 *push* 를 선호
 
-외부 호출은 우연하게 또는 고의적으로 실패 할 수 있습니다. 이런 실패의 피해를 최소화하기 위해, 호출의 수신자(recipient)에 의해 시작할 수 있는 트렌젝션을 담고 있는 각각의 외부 호출은 분리 시키는 것이 종종 더 낫습니다. 이것은 특히 결제쪽과 관련있는데, 사용자가 스스로 자금을 인출하는 것 보다는 자동으로 그들에게 자금이 보내지게 하는 것이 더 낫습니다. (이것은 [가스 제한 관련문제(problems with the gas limit)](./known_attacks#dos-with-block-gas-limit) 가능성도 줄입니다.) 단일 트렌젝션에서 여러 개의 `send()` 호출을 묶지 마세요.
+외부 호출은 우연하게 또는 고의적으로 실패 할 수 있습니다. 이런 실패의 피해를 최소화하기 위해, 호출의 수신자(recipient)에 의해 시작할 수 있는 트렌젝션을 담고 있는 각각의 외부 호출은 분리 시키는 것이 종종 더 낫습니다. 이것은 특히 결제쪽과 관련있는데, 사용자가 스스로 자금을 인출하는 것 보다는 자동으로 그들에게 자금이 보내지게 하는 것이 더 낫습니다. (이것은 [가스 제한 관련문제(problems with the gas limit)](#dos-with-block-gas-limit) 가능성도 줄입니다.) 단일 트렌젝션에서 여러 개의 `send()` 호출을 묶지 마세요.
 
 ```sol
 // bad
@@ -566,15 +566,16 @@ A가 배포되었을 때, 컴파일러는 다음과 같이 상속을 왼쪽에�
 
 0.4 버전 이전의 솔리디티는 0으로 나누기를 했을 때 [0을 반환](https://github.com/ethereum/solidity/issues/670) 하고 예외를 `throw`하지 않았습니다. 솔리디티 버젼이 최소 0.4 버전인지 확인하세요.
 
-
+<a name="known_attacks"></a>
 # 알려진 공격들(Known Attacks)
 
 다음은 당신이 스마트 컨트랙트를 작성할 때 인지하고 방지해야 하는 알려진 공격들의 목록입니다.
 
-## 경합조건(Race Conditions)<sup><a href='#footnote-race-condition-terminology'>\*</a></sup>
+## 경합조건(Race Conditions)<sup><a name="race-conditions"></a>
 
 컨트랙트를 외부(external)에서 호출 시 발생하는 가장 큰 위험 중 하나는 그것이 통제 흐름을 뺏을 수 있다는 것이며, 호출한 함수가 예상하지 못한 당신의 데이터를 변경할 수 있다는 것입니다. 이러한 종류의 버그는 많은 형태를 가지고 있을 수 있으며, DAO의 붕괴를 만들어낸 두 개의 주요 버그들은 이런 종류의 버그였습니다.
 
+<a name="reentrancy"></a>
 ### 재진입(Reentrancy)
 
 이미 알려진 이 버그의 첫 번째 버전은 함수의 첫 번째 호출이 종료되기 전에 재귀 호출되는 함수를 포함하고 있습니다. 이것은 파괴적인 방향으로 상호작용하는 다른 함수의 호출을 야기할 수 있습니다.
@@ -936,7 +937,7 @@ contract Vulnerable {
 
 [EIP 150](https://github.com/ethereum/EIPs/issues/150)의 하드포크로 Call Depth 공격은 더 이상 관련이 없습니다<sup><a href='http://ethereum.stackexchange.com/questions/9398/how-does-eip-150-change-the-call-depth-attack'>\*</a></sup> (모든 가스가 1024 호출 깊이 한도에 다다르기 이전에 소모될 것입니다).
 
-
+<a name="software_engineering"></a>
 # 소프트웨어 공학 기법들(Software Engineering Techniques)
 
 [일반적인 철학](/general_philosophy/)에서 논했던 것처럼, 당신 스스로를 알려진 공격들로부터 방어하는 것만으로는 충분하지 않습니다. 블록체인 상에서의 실패 비용은 매우 높을 수 있기 때문에, 이러한 위험을 고려하여 소프트웨어를 작성하는 방법을 바꿔야 합니다.
@@ -1169,7 +1170,7 @@ function withdraw() public {
 
 > 지불되는 보상의 가치는 영향의 심각도에 기반해 달라집니다. 중요하지 않은 '무해한' 버그들의 보상은 0.05 BTC부터 시작합니다. 합의 문제까지 이어질 수 있는 중요한 버그들은 5BTC까지 보상이 올라가게 됩니다. 매우 심각한 취약점들의 경우 더 높은 보상이 가능합니다 (최대 25BTC 까지).
 
-
+<a name="tokens"></a>
 # 토큰 구현을 위한 모범 사례
 
 토큰을 구현하는것은 다른 모범 사례를 지켜야 하지만 또한 몇 가지 고유한 고려사항도 가져야만 합니다.
@@ -1227,7 +1228,7 @@ EIP-20 토큰의 `approve()` 함수는 인가된 소비자가 의도한 양보�
     }
 ```
 
-
+<a name="documentations_procedures"></a>
 # 문서와 절차들
 
 많은 자금을 가지고 있거나 반드시 필요한 컨트랙트를 출시할 때 적절한 문서를 포함시켜야 하는 것은 중요합니다. 보안과 관련된 몇 가지의 문서들은 다음 사항들을 포함해야 합니다:
@@ -1271,7 +1272,7 @@ EIP-20 토큰의 `approve()` 함수는 인가된 소비자가 의도한 양보�
 - 개발자들의 이름 그리고/또는 다른 중요한 집단들
 - 질문받을 수 있는 대화방
 
-
+<a name="security_tools"></a>
 # 보안 도구
 
 ### 정적 분석(Static Analysis)
@@ -1295,7 +1296,7 @@ EIP-20 토큰의 `approve()` 함수는 인가된 소비자가 의도한 양보�
 - [Solium](https://github.com/duaraghav8/Solium) - 또 다른 솔리디티 린팅
 - [Solhint](https://github.com/protofire/solhint) - 보안과 작성 규칙 검증을 모두 제공하는 솔리디티를 위한 린터
 
-
+<a name="security_notifications"></a>
 # 보안 알림
 
 이것은 이더리움과 솔리디티에서 발견된 보안 취약점을 강조하는 출처들의 목록입니다. 보안 알림(security notifications)의 공식 출처는 이더리움 블로그이지만, 대부분의 경우 취약점들은 다른 출처들에서 먼저 공개되고 이에 대해 논의될 것입니다.
@@ -1331,7 +1332,7 @@ EIP-20 토큰의 `approve()` 함수는 인가된 소비자가 의도한 양보�
 
 함수형 언어는 솔리디티와 같은 절차형 언어에 대해 함수 내에서의 불변성과 강한 컴파일 시간 확인과 같은 특정한 기능들을 보장해줍니다. 함수형 언어는 결정적인 행동을 제공함으로써 오류에 대한 위험을 감소시킬 수 있습니다 (더 자세한 내용은 [여기](https://plus.google.com/u/0/events/cmqejp6d43n5cqkdl3iu0582f4k)를 참고하세요. Curry–Howard correspondence와 linear logic).
 
-
+<a name="bibliography"></a>
 # 스마트 컨트랙트 보안 참고문헌
 
 이 문서의 대부분은 이미 커뮤니티에 의해 작성된 다양한 부분에서 얻은 코드, 예시 그리고 통찰을 포함하고 있습니다.

@@ -7,7 +7,7 @@
 
 ## 어디서부터 시작하죠?
 
-* [일반적인 철학 (General Philosophy)](./general_philosophy.md) 스마트 컨트렉트 보안 사고방식에 대해 설명합니다.
+* [일반적인 철학 (General Philosophy)](#General_Philosophy) 스마트 컨트렉트 보안 사고방식에 대해 설명합니다.
 * [솔리디티 권장사항(Solidity Recommendations)](./recommendations.md) 바람직한 코드 패턴의 예시를 담았습니다.
 * [알려진 공격(Known Attacks)](./known_attacks.md) 다른 클래스들 간의 취약성을 피하는 방법을 설명합니다.
 * [소프트웨어 엔지니어링(Software Engineering)](./software_engineering.md) 몇개의 아키텍쳐의 개요와 위험완화를 위한 디자인 접근법의 개요입니다.
@@ -24,7 +24,7 @@
 
 글이나 블로그 포스팅을 하신다면, [bibliography](./bibliography.md)에 추가 해 주세요.
 
-
+<a name="General_Philosophy"></a>
 # 일반적인 철학 (General Philosophy)
 이더리움과 복잡한 블록체인 프로그램들은 새롭고 아주 실험적입니다. 그러므로, 당신은 새로운 버그들이나 보안 위험을 발견하는 것과 같은 보안 환경에 대해 끊임없는 변화를 예상하셔야 합니다. 이 문서의 보안 연습은 기초적인 단계의 보안이므로 스마트 컨트렉트 개발자로서는 더 공부하셔야 합니다.
 
